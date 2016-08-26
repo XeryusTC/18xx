@@ -130,4 +130,86 @@ Private companies that have not yet been closed by the end of the OR that
 started Phase 5 are closed then.
 % TODO: ADD REFERENCE TO PRIVATE COMPANIES CLOSING
 
+\section{Stock Rounds}
+A Stock Round or ``SR'' consists of a series of turns, starting with the player
+that holds the Priority Deal and continuing clockwise. The game begins with an
+auction of the 17 Private Companies available at the start, this is then
+followed by a SR.
+
+In each SR the player may do the following:
+\begin{enumerate}
+	\item Sell: a player may do any of the following sell actions. He may
+	determine the order in which to do these.
+	\begin{itemize}
+		\item Sell certificates
+		\item Exchange Private companies for shares in Public companies.
+		\item Convert 5-share Public companies to a 10-share Public companies.
+	\end{itemize}
+	\item Buy: a player may then perform one of the following buy actions.
+	\begin{itemize}
+		\item Buy one certificate of a Public company.
+		\item Start a Public company.
+		\item Auction a Private company.
+	\end{itemize}
+\end{enumerate}
+
+When a player does neither of these actions they are deemed to ``pass''. The
+SR ends when all players have passed consecutively, a player who takes an action
+in a SR is therefore guaranteed to have another action.
+
+\section{Selling stock}
+\begin{itemize}
+	\item To sell stock, the player transfers any number of share certificates
+	to the Bank Pool, subject to these constraints:
+	\begin{itemize}
+		\item Private Companies may never be sold.
+		\item Shares in a Public Company which has not yet completed a turn in
+		an OR may not be sold.
+		\item There may never be more than 50\% of shares of any Public company
+		in the Bank Pool.
+		\item The Director certificate of a company may never be in the Bank
+		Pool. This means that there must always be a player owning at least 20\%
+		of a Public Company.
+	\end{itemize}
+	The player receives from the Bank the current Stock price for each share
+	sold.
+	\item If a player is the Director of a company and he now owns less of that
+	company than another player as a result of selling shares that other player
+	becomes the new Director of the company. If there is more than one eligible
+	player, the new Director is the player with the largest holding, or in case
+	of a tie, the tying player closest to the left of the outgoing Director. The
+	outgoing Director exchanges the Director certificate for two ordinary
+	certificates and the new Director exchanges two ordinary certificates for
+	the Director certificate. This exchange is done before resolving the rest of
+	the sale.
+	\item If the Director (the outgoing Director if a change occured) sells
+	shares the Company's Stock price drops one space on the Stock market (note:
+	one space in total, not one per share sold). If any other player than the
+	Director sells shares the Stock price does not move. If the stock marker
+	moves to a place that is already occupied by other stock markers then it is
+	moved to the bottom of the stack. If the player has sold shares in more than
+	one company of which he is the Director than he determines the order in
+	which the stock markers drop.
+	\item A player may exchange a Private company for a share in a Public
+	company provided the following:
+	\begin{itemize}
+		\item The Director of the Public company agrees.
+		\item The Public company is able to trace a route from one of its
+		station markers to a home hex of the Private company, or have a station
+		marker on a home hex.
+	\end{itemize}
+	The player takes a share and the Public company and the Public company
+	receives the Private company in its treasury. Since this is a sell action a
+	player may do this as often as he wants, but he may not go over the 60\%
+	share limit.
+	\item When a player exceeds his certificate limit he must sell as must stock
+	as possible to no longer exceed the limit. This should be done at the first
+	opportunity.
+	\item As a sell action the player may convert a 5-share Public company to a
+	10-share Public company. This is done by turning the remaining five shares
+	on the company charter over. Certificates now represent half of their
+	previous share, a Director share is worth 20\% and a regular share is worth
+	10\%.
+\end{itemize}
+
 \end{document}
