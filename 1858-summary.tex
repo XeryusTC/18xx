@@ -157,7 +157,7 @@ When a player does neither of these actions they are deemed to ``pass''. The
 SR ends when all players have passed consecutively, a player who takes an action
 in a SR is therefore guaranteed to have another action.
 
-\section{Selling stock}
+\subsection{Selling stock}
 \begin{itemize}
 	\item To sell stock, the player transfers any number of share certificates
 	to the Bank Pool, subject to these constraints:
@@ -211,5 +211,67 @@ in a SR is therefore guaranteed to have another action.
 	previous share, a Director share is worth 20\% and a regular share is worth
 	10\%.
 \end{itemize}
+
+\subsection{Buying stock}\label{sec:buying}
+Players may never buy stock from other players. All stocks are bought
+from the bank or Public companies.
+
+A player may do only one buy action on his/her turn. A player may not buy stock
+or offer a Private company for auction when he/she is at the share limit.
+\begin{itemize}
+	\item To buy stock in a company a player must not own 60\% or more in that
+	company, or have sold stock of that company earlier in the current SR. The
+	player may take one certificate of the company and must pay the current
+	stock for it. If the share comes from the bank pool then the price is paid
+	to the bank, if it comes from the company charter then it is paid to the
+	company's treasury. The share price of the company is never affected by this
+	action. If the player now owns a larger share in the company than the
+	current Director, he becomes the Director and two of his certificates for
+	the Director share.
+	\item Prior to Phase 5 the current player can pick a Private company to put
+	up for auction, he/she must bid a multiple of P5 and at least equal to the
+	Minimum Bid for the Private company. Players can bid on the Private company
+	in clockwise order, increasing the bid by multiples of P5; or they can pass.
+	If a player passes then he/she may not bid during this auction any more.
+	The player with the highest bid after all other players have passed wins
+	the action. The current player's turn is now over, regardless of whether
+	he/she has won the auction.
+	\item Prior to Phase 5 players can only start Public companies by exchanging
+	a Private company. To do this pick an unstarted Public company and put its
+	stock marker on the space on the stock market corresponding to the face
+	value of the Private company, rounded down. If there is already a token on
+	this space the stock marker is placed on the bottom of the pile. The player
+	pays the current stock price into the company's treasury. The Private
+	company is also placed into the Public company's treasury. The player
+	receives the Director certificate and the remaining shares are put in the
+	company treasury. Place 5 shares upside down in the treasury to denote that
+	the company is a 5-share company. The player puts a station marker in one
+	of the home hexes of the Private company. If there is no space for the
+	station marker in one of these hexes then the conversion is not allowed.
+	\item Starting from Phase 5 a player may start a Public company by
+	purchasing the Director certificate. This is done by first setting an
+	initial stock price by placing its stock marker in one of the red outlined
+	spaces on the stock market (P70 to P150). If the space is already occupied
+	the marker is put on the bottom of the stack. The cost is twice the stock
+	price, paid into the Public company's treasury. The company must have enough
+	money for for the station marker of the company may not be started. The
+	current player puts one station marker of the Company on an unoccupied city
+	circle anywhere on the map, and the Company immediately pays twice the value
+	of the city to the bank (hexes without a tile or pre-printed value are
+	free). The Public company must start as a 10-share company.
+\end{itemize}
+
+\subsection{Initial Stock Round}
+At the start of the first stock round the initial 17 Private companies are
+auctioned (see \autoref{sec:buying}) until all players pass. The minimum bid for
+each private company is printed on the card. The winner of the auction pays the
+bid to the Bank. Public companies may not be started in the first Stock Round.
+
+\subsection{Ending the Stock Round}
+The SR ends when all players pass consecutively. Nothing happens to the stock
+value of fully sold out companies. The Priority Deal card is given to the player
+left of the the last player to make a buy or sell action in the SR. If there
+were no transactions in the SR then the Priority Deal does not move. The Round
+Marker is moved to OR1.
 
 \end{document}
