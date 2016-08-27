@@ -408,4 +408,209 @@ yellow, may be included in a route only once.
 	\item The brown P tile is reserved for Porto (B9).
 \end{itemize}
 
+\subsubsection{Place station marker}
+Public companies may place one station marker per OR on a vacant city space on a
+route of the Company. A Public company may not have more than one station marker
+in any hex. Station markers can not be moved or removed after they have been
+placed. Each Public company has three station markers. The station marker placed
+during formation is fee (exception: see \autoref{sec:buying}).
+
+Prior before the Private Closing Round, one city space on each of a Private
+company's home hexes is reserved for that Private company. Public companies must
+leave a free space on those hexes for the Private if it has not been closed yet.
+If a hex is a home hex of multiple Private companies then each Private company
+has a reserved space. If the Public company owns a Private company then it may
+ignore restrictions for its home hexes.
+
+The cost of placing a station marker is determined by how many provincial
+borders (the red dashed lines) are crossed, the cost is P40 per provincial
+border crossed or P20 if the Company already has a marker in that province. The
+cost is determined from the closest station marker in number of borders crossed.
+This is irrespective of the route involved.
+
+\subsubsection{Run trains}
+If the Company has one or more trains, it runs them to establish earnings.
+\begin{itemize}
+	\item Each trains runs a separate route, they mare not share track segments,
+	nor may they visit the same track segment twice.
+	\item Trains may meet in or cross at cities, ports or off-board areas.
+	\item The value of a route is equal to the sum of the values of the visited
+	cities, ports, or off-board hexes that it passes through or reaches. Skipped
+	cities do not count. The value of a port or city is printed on the hex, the
+	value of France is the number in the coloured box that matches the Phase
+	colour (colour of the largest owned train).
+	\item The earnings of a Company are the sum of the values of the routes run
+	by its trains, plus the income of the Private companies that it owns.
+	\item The highest legal earnings announced by a player must be declared, but
+	players are not required to announce higher earnings than those declared by
+	the Director.
+\end{itemize}
+
+There are four types of trains:
+\begin{enumerate}
+	\item H-trains run the given number of hexes given by its number, the start
+	hex is not counted. They run on broad or dual-gauge. All cities, ports and
+	France count towards their earnings.
+	\item M-trains run up to the indicated number of large cities, ports, or
+	France on metre-gauge or dual-gauge track. All small cities count towards
+	the value of the run but not the number of the train. The route may start
+	and/or end at small cities.
+	\item E-trains run up to the indicated number of large cities, ports, or
+	France on broad-gauge or dual-gauge track. Intermediate small cities are not
+	counted and large cities may not be skipped.
+	\item D-trains run the same as E-trains and double the value of their run.
+\end{enumerate}
+Wounded trains run as normal but they halve the value of their run.
+
+\subsubsection{Distribute earnings}
+A Public company can do one of three things with its earnings:
+\begin{enumerate}
+	\item Pay full dividends. Divide the number earned by the number of shares
+	in the company (five or ten). Round down to the nearest integer and pay that
+	number per share to the shareholders. The remainder goes to the company.
+	Payments for shares in the Company Treasury go to the company, payments for
+	shares in the Bank Pool stay in the Bank.
+	\item Pay half dividends. The company keeps half of the earnings, the other
+	half is distributed in the same way as with full dividends.
+	\item Keep the earnings. All of the earnings go directly into the Company
+	treasury.
+\end{enumerate}
+
+If the Company keeps the earnings, or its earnings are zero then its stock price
+marker is moved one space left on the stock market. If the dividend paid to
+share holders is equal to or greater than the current stock price for ten share
+companies, or twice the current stock price for five share companies then the
+stock price marker is moved one space to the right, unless the company is
+already at the maximum price. If the stock marker moves to a space that is
+already occupied then it is placed on the bottom of the pile. If the marker does
+not move then it retains its position relative to the other markers on the
+space.
+
+\subsubsection{Close private companies}
+All Private companies owned by the Company are now closed and removed from the
+game. The Company receives the face value from each of the Private companies
+into its Treasury.
+
+\subsubsection{Purchase trains}
+While a Company has fewer trains than the current train limit, it may purchase a
+train.
+\begin{itemize}
+	\item The train may be bought from another Company, with its Directors
+	consent. The price paid must be at least P1 and at most the money currently
+	in the Company Treasury.
+	\item The train may be any from the Bank Pool, or the next new train in the
+	Bank (or in Phase 7, a 5D). The price paid must be the face value.
+\end{itemize}
+The company may buy multiple trains each OR if it has the space and resources,
+but the effects of each train apply immediately after it is bought. A Company
+may buy a train if it currently has room for it, even if this means that the
+purchase triggers a Phase change that would cause the Company to be over the
+train limit. Conversely, if the Company is currently at the train limit it may
+not buy a train even if it would trigger a Phase change that would cause the
+Company to be within the train limit. If the purchase of a train lowers the
+train limit then Companies that are over the train limit must discard the
+excess to the Bank Pool without compensation. They do this in order of
+descending stock price (operating order).
+
+Wounded trains count towards the Company's train limit, but they  may be
+discarded during this phase. This can be done to make space for a better train
+or to cause the Company to have no trains. Discarded wounded trains are removed
+from the game.
+
+If the Company has no train it does not have to buy one, but if it doesn't then
+the stock price marker is moved one space to the left. The Company may, if it
+has no train, use Emergency Financing as follows:
+\begin{itemize}
+	\item The Company may issue shares from its Treasury to the Bank Pool,
+	receiving the current share price for each. This reduces the stock price by
+	one step. The Company may not issue more shares than needed to buy the next
+	train. This may be done during the Company's first operating turn.
+	\item The Director may contribute cash from his/her hand. He may not sell
+	shares to do this. He also may not contribute more cash than is needed to
+	buy a train.
+\end{itemize}
+A Company may buy any train from the Bank or the Bank Pool, it is not required
+to buy the cheapest train, it may buy a more expensive one if it is available.
+
+After Emergency Financing a Company may buy additional trains following the
+normal rules if it has enough money left over. If Emergency Financing does not
+raise enough money to buy a train, no money is raised and the Company does not
+buy a train.
+
+Some trains can be bought as a narrow or broad gauge train, when the train is
+bought from the Bank the buyer decides which kind of train it becomes. This
+cannot be changed later, even if the train is returned to the Bank Pool.
+
+\subsubsection{Redeem and issue stock}
+A Company may buy any or all of its own shares that are currently in the Bank
+Pool and place them in its Treasury. It pays the current stock price for each
+share.
+
+Alternatively a Company may issue its own shares from its Treasury into the Bank
+Pool, receiving the current stock price for each one. The stock price is
+reduced by one step. This may not be done in the Company's first operating turn.
+
+\section{Phases}
+The game starts in Phase 2, during Phase 2:
+\begin{itemize}
+	\item Broad gauge yellow track is available.
+	\item France counts the lowest value.
+	\item 5-share companies may own up to three trains.
+	\item 10-share companies may own  up to four trains.
+	\item The first set of privates (\#1 -- \#17) are available.
+	\item Private companies earn the lower income.
+\end{itemize}
+
+Phase 3 starts when the first 4H/2M train is bought, during which:
+\begin{itemize}
+	\item All yellow and green tiles are available.
+	\item France counts the second value.
+	\item 5-share companies may own up to three trains.
+	\item 10-share companies may own  up to four trains.
+	\item Private companies earn the higher income.
+	\item The second set of Private companies become available (\#18 -- \#22).
+\end{itemize}
+
+Phase 4 starts on the purchase of the first 6H/3M train. At the start of Phase 4
+2H trains are wounded. During Phase 4:
+\begin{itemize}
+	\item Yellow and green tiles are available.
+	\item France counts the second value.
+	\item 5-share companies may own up to two trains.
+	\item 10-share companies may own up to three trains.
+	\item Private companies earn the higher income.
+\end{itemize}
+
+Phase 5 starts on the purchase of the first 5E/4M train. At the start of Phase
+5, all 5-share companies must convert to 10-share companies. During Phase 5:
+\begin{itemize}
+	\item Yellow, green and brown tiles are available.
+	\item Companies may own up to two trains.
+	\item France counts the third value.
+	\item Private companies earn the higher income.
+	\item At the end of the OR Private companies are closed.
+	% TODO: ADD REFERENCE TO PRIVATES CLOSING
+\end{itemize}
+
+Phase 6 starts when the first 6E/5M train is bought. At the start of Phase 6, 4H
+and 3M trains are wounded, 2H trains are removed from the game without
+compensation. During Phase 6:
+\begin{itemize}
+	\item Yellow, green and brown tiles are available.
+	\item Companies may own up to two trains.
+	\item France counts the third value.
+\end{itemize}
+
+Phase 7 starts when the first 7E/6M train is bought. At the start of Phase 7, 6H
+and 4M trains are wounded, and 4H and 3M trains are removed from the game
+without compensation. During Phase 7:
+\begin{itemize}
+	\item Yellow, green, brown and grey tiles are available.
+	\item Companies may own up to two trains.
+	\item France counts the highest value.
+	\item 5D trains are available.
+	\item Once the fifth Phase 7 train is bought, 6H en 4M trains are removed
+	from the game without compensation.
+\end{itemize}
+
 \end{document}
