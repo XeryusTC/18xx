@@ -1,0 +1,168 @@
+\documentclass[a4paper,twocolumn]{article}
+
+\usepackage[hidelinks]{hyperref}
+\usepackage[all]{hypcap}
+
+\title{1858 differences from 18xx}
+\author{Designed by Ian D Wilson\\
+	Written by Xeryus Stokkel}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Game setup}
+\begin{itemize}
+	\item Bank size is P12,000.
+	\item Randomly determine the player ordering, reseat players so they are in
+	clockwise order. The lowest number (or highest dice roll) becomes Priority
+	Deal.
+	\item The game starts with an auction of the Privates.
+	\item Starting capital and share limits can be found in \autoref{tbl:start}.
+\end{itemize}
+
+\begin{table}
+	\centering
+	\caption{Initial start capital and share limit.}
+	\label{tbl:start}
+	\begin{tabular}{l|r|r|r|r}
+		No. Players & 3 & 4 & 5 & 6 \\ \hline
+		Start capital & P500 & P375 & P300 & P250 \\
+		Certificate limit & 21 & 16 & 13 & 11 \\
+	\end{tabular}
+\end{table}
+
+\section{Corporate entities}
+\subsection{Private companies}
+\begin{itemize}
+	\item There are 17 Private companies (numbered 1 to 17) that are available
+	from the start of the game.
+	\item Five more Private companies become available in Phase 3.
+	\item Each Private company only has one certificate, it is owned by one
+	Player. It counts towards the certificate limit.
+	\item Privates pay a fixed income, in Phase 2 this is the first revenue
+	number, in later phases this is the second number. If there is only one
+	number they always pay this.
+	\item If owned by a player the Privates income is paid directly to their
+	hand. If owned by a company it is added to its revenue when it operates.
+	\item Privates may not be bought or sold.
+	\item All Privates close at the end of the OR in which Phase 5 has started.
+	\item Hexes on the map that are associated with the Private are its "home
+	hexes", these are reserved and free to build for that Private. Company \#1
+	has no board presence.
+	\item Can lay track, but cannot own trains.
+\end{itemize}
+
+\subsection{Public companies}
+\begin{itemize}
+	\item Public companies can have 5 or 10 shares.
+	\item If a Public company is closed it is available for restart later in the
+	game.
+	\item If a Company's stock marker falls below P50 then the company is closed
+	and its shareholders are not compensated. Its trains are moved to the Bank
+	Pool and its station markers are removed from the board.
+	\item Can lay track, place station markers, operate and purchase trains,
+	issue/redeem stock.
+	\item A player may own at most 60\% of a Public company (exception: Private
+	Closure Round, see \autoref{sec:closure}).
+\end{itemize}
+
+\section{Stock Rounds}
+When a stock marker moves to a place on the stock market that is already
+occupied by another marker then it is placed at the bottom of the stack.
+\subsection{Sell actions}
+A player may sell stock, exchange Privates for shares in Public companies, and
+convert 5-share Publics to 10-share Publics. He may do this as often as he/she
+wants
+\begin{itemize}
+	\item If a player who is the Director of a Public company sells enough stock
+	than the player with the highest amount of stock closest to his left becomes
+	the new Director.
+	\item If the Director of a company (including the outgoing Director) sells
+	shares, the company's value drops by one step regardless of the number of
+	stocks sold. If a player who is not the Director sells stock the stock price
+	does not move.
+	\item The selling player always determines the order in which stock is sold.
+	\item A player may exchange a Private for a share in a Public company from
+	its Treasury. For this the Director of the Public company has to agree, and
+	there must be a valid route from one of the Public company's station tokens
+	to a home hex of the Private, or there is a station token on one of the home
+	hexes. The Public company may place a station marker in one home hex free of
+	charge, granted that there is space for it and a token is available.
+	\item A player may not go over the 60\% share limit by exchanging shares.
+	\item Exchanging shares can be done as often on a player's turn as he/she
+	wishes.
+	\item A player may change 5-share companies to 10-share companies if he is
+	their Director. He does this by turning over the 5 remaining shares in the
+	Treasury. Regular shares are now worth 10\% of the company, the Director
+	share is now worth 20\%.
+\end{itemize}
+
+\subsection{Buy actions}
+A player may do only one of the following buy actions on his/her turn:
+\subsubsection{Buying stock}
+This may not be done by a player at his/her certificate limit.
+\begin{itemize}
+	\item A player may only buy stock in a company if he owns less than 60\% of
+	it. He may also not have sold its stock earlier in the current SR. Only one
+	certificate may be bought at a time.
+	\item If the certificate comes from the Bank Pool its price is paid to the
+	Bank. If it comes from the Company Treasury the money is paid to the
+	Treasury. The price is always the current stock value.
+	\item Buying stock \textbf{never} affects the stock price.
+\end{itemize}
+
+\subsubsection{Auction private}\label{sec:auction}
+This may not be done by a player at his/her certificate limit.
+\begin{itemize}
+	\item Before Phase 5 a player may elect an unsold Private company for
+	auction. He/she must bid a multiple of P5 and at least equal to the Minimum
+	Bid on the certificate.
+	\item Players may raise the current bid by multiples of P5, going clockwise
+	around the table. A player may also pass, he/she is then not allowed to bid
+	in this auction anymore.
+	\item When only one player is left bidding, he wins the auction and gains
+	ownership of the Private. The winning bid is paid to the Bank.
+	\item After the auction finishes it is the turn of the player who sits to
+	the left of the player who initiated the auction.
+\end{itemize}
+
+\subsection{Start Public company}
+\begin{itemize}
+	\item Before Phase 5 players may only start Public companies by exchanging a
+	Private company. They place an unopened Public company's stock marker on the
+	space on the stock market corresponding to the face value of the Private,
+	rounded down. The player also pays this initial stock price into the Company
+	Treasury. The Private company is also placed in the Public's Treasury. The
+	company is started as a 5-share company; place 5 shares upside down in the
+	Treasury to denote this. The player puts a station marker on a home hex of
+	the Private that has space for it. If there is no space he/she must elect a
+	different home hex, or the company may not start.
+	\item Starting in Phase 5, players may start a Public company by purchasing
+	the Director certificate by setting the initial stock price by placing the
+	stock marker in the red bordered area (P70 to P150). The player pays twice
+	the initial stock price into the company Treasury. The player puts a station
+	marker on an unoccupied city circle on the map, the company pays twice the
+	current value of the city to the Bank (a hex without a tile or pre-printed
+	city value is free). The Company starts as a 10-share company.
+\end{itemize}
+
+\subsection{First Stock Round}
+At the start of the first stock round the initial Private companies are
+auctioned until all players consecutively pass on starting an auction.
+Auctioning is done in the same way as in \autoref{sec:auction}. Public companies
+may not be started in the first stock round.
+
+\subsubsection{Ending the Stock Round}
+\begin{itemize}
+	\item The SR ends when all players pass consecutively.
+	\item Nothing happens to the stock values of Public companies that have sold
+	out.
+	\item The Priority Deal card moves to the player who sits to the left of the
+	last player who bought or sold something. If there were no transactions then
+	the Priority Deal does not move.
+	\item The round marker is moved to OR1.
+\end{itemize}
+
+\end{document}
