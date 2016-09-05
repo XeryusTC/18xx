@@ -2,8 +2,11 @@
 
 \usepackage{fullpage}
 \usepackage[compact]{titlesec}
+\usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
 \usepackage[all]{hypcap}
+
+\setlist{nosep}
 
 \title{Harzbahn 1873 Differences}
 \author{Designed by Ian D Wilson}
@@ -15,6 +18,7 @@
 
 \section{Map}
 \begin{itemize}
+	\setlength{\itemsep}{0em}
 	\item Thick black lines are state railway tracks, companies don't use these.
 	\item Thin black lines are concession routes.
 	\item White and black dashed lines are narrow gauge track, companies do use
@@ -81,7 +85,7 @@ that he may do one of the following: buy a share, start a railway company, start
 a public mining company, or exercise a purchase option. If the player does not
 want to sell shares and perform an action he may pass.
 
-\subsection{Shares and directorship}
+\subsubsection{Shares and directorship}
 Companies can have the following share splits:
 \begin{itemize}
 	\item Two 50\% shares (public mining companies only).
@@ -96,7 +100,7 @@ company than its current director. Exception: the director of a railway company
 remains its director when he owns the associated concession and the company has
 not bought its compulsory train yet, or it becomes insolvent.
 
-\subsection{Selling shares}
+\subsubsection{Selling shares}
 Shares are sold in blocks for a single company. Sold shares end up in the bank
 pool. The player receives the current stock value per share sold from the bank.
 Exception: when a company has not yet operated then the player receives the
@@ -121,7 +125,7 @@ resolved in turn order starting from the old director. Up to 80\% of shares may
 be in the bank pool. Companies in receivership have 100\% of their shares in the
 bank pool.
 
-\subsection{Buying shares}
+\subsubsection{Buying shares}
 A player may buy shares in a company if they are available, he has not sold
 shares in that company in this SR, and the company is not in receivership. The
 player decides whether to buy from the bank pool or IPO if there are shares in
@@ -137,9 +141,63 @@ buying from the IPO there can be one of two cases:
 	issuing new shares.
 \end{itemize}
 
-\subsection{Floating a company}
+\paragraph{Flotation of a company}
 A railway company floats as soon as the third of its original is bought from the
 IPO. The company is floated and receives 5 times its current stock value as
-starting capital. The remaining two shares are placed in the bank pool.
+starting capital. The remaining two shares are placed in the bank pool. The
+company charter goes to the owner of the concession. Station tokens are
+immediately placed on the company's home stations.
+
+\subsubsection{Formation of a Railway Company}
+A player can form a railway company if he owns the concession of the company and
+has enough money to purchase at least one of the company's shares. To do this he
+puts the stock marker on one of the shaded spaces on the stock market, the
+marker always goes below any existing markers on that space. The five 20\%
+shares go into the company's IPO space. He must now buy one share and may
+optionally buy a second. Note: the company does not float until the third share
+has been bought.
+
+\subsubsection{Formation of a Public Mining Company}
+This action is not available until the second stock round (Exception: Harzer
+Werke). Public mining company formation is done as follows: the player chooses
+an unformed public mining company and two private mines. At least one of the
+private mines must belong to the player forming the company, the other may
+belong to a different player. Both private mines must not be closed. The stock
+value of the company is the average of the face values of the private mines,
+rounded down to the next valid stock value. The two private mines are placed on
+the charter of the public mining company, along with their assets. The machines
+belonging to private mines can not be moved, switchers and treasury can be
+freely moved. The owners of the private mines both get a 50\% share in the
+company, the player who forms the company becomes its director.
+
+The formation of the Harzer Werke (HW) follows some additional rules. It can
+only be formed by using ``Vor-Harzer'' mines. It can be formed in the first
+stock round if one of the mines used is mine \#12 (Blankenburg), and only by the
+owner of that mine. If the HW is not formed in the first stock round then it can
+be formed by any player owning a Vor-Harzer mine from the second stock round on.
+
+\subsubsection{Exercise a purchase option}
+If a player won the auction for a purchase option on a company in receivership
+he may now execute it. He buys at least 20\% and at most 40\% of the shares of
+the company in a single action. The company is released from receivership and
+the player becomes the director. Players may now buy shares in the company like
+normal.
+
+\subsubsection{Shares in MHE}
+The MHE has 10 shares that can be bought and sold by players as regular. The
+shares may not be sold in the first stock round. The initial stock value is
+120M. When shares are sold they drop like normal until the MHE buys a 5-train,
+the shares remain fixed for the rest of the game after that point.
+
+\subsubsection{Ending the Stock Round}
+After all players have successively passed the SR is over. All concessions that
+were not used to form the company and purchase options that were not exercised
+are returned to the bank without compensation, they are available again in the
+next AR.
+
+The new turn order is determined based on player cash, the player with the most
+cash gets turn card \#1, the player with the second most cash gets turn card
+\#2, etc. If two players are tied for cash, then the prior turn order between
+them is preserved. This is the order that is used during the next AR and SR.
 
 \end{document}
