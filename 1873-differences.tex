@@ -1,0 +1,145 @@
+\documentclass[a4paper,twocolumn]{article}
+
+\usepackage{fullpage}
+\usepackage[compact]{titlesec}
+\usepackage[hidelinks]{hyperref}
+\usepackage[all]{hypcap}
+
+\title{Harzbahn 1873 Differences}
+\author{Designed by Ian D Wilson}
+\date{Summary by Xeryus Stokkel}
+
+\begin{document}
+
+\maketitle
+
+\section{Map}
+\begin{itemize}
+	\item Thick black lines are state railway tracks, companies don't use these.
+	\item Thin black lines are concession routes.
+	\item White and black dashed lines are narrow gauge track, companies do use
+	these.
+	\item Hexes with red borders are towns, all other hexes with dots or circles
+	are villages. Hexes with two separate circles on them are still considered
+	one village.
+	\item White and pink circles are known as industries, numbered industries
+	are mines.
+\end{itemize}
+
+\section{Game start}
+\begin{itemize}
+	\item The bank is of unlimited size.
+	\item The start player is also in charge of the bank.
+	\item Evenly distribute 4200M between all players as start capital.
+\end{itemize}
+
+\subsection{Start auction round}
+In the initial auction round only the 15 mine certificates, the HBE and the GHE
+are available. Start with the Start Premium bid, players bid consecutively
+starting with 0M in increases of 10M. Players must either raise or pass, players
+who have passed are out of the auction. Turn order is redetermined in reverse
+order of passing (the winner goes first, the first to pass last). The player who
+has won the bid \emph{must} buy one of the mines or concessions for face value
+or minimum bid plus the Start Premium to the bank.
+
+Next the auction continues as follows. A player may pass or buy one of the
+remaining mines or concessions for face value or minimum bid plus the Start
+Premium. When all players have passed the Start Premium is lowered by 10M and
+another round of auctioning is started with the new Start Premium. The auction
+ends when all mines and concessions have been bought or the Start Premium has
+dropped to 0M and all players have passed. All unsold mines are closed, their
+certificates are returned to the bank and their markers are turned to their
+inactive side. Concessions are available again in the next AR.
+
+After the Start Auction Round a regular SR is started. Turn order is the same
+as the second part of the Start Auction Round.
+
+\section{Trading Rounds}
+The TRs consist of an Auction Round (AR) and a Stock Round (SR).
+
+\subsection{Auction Rounds}
+During ARs only the concessions are available, private mining companies are only
+sold during the Start Auction Round. Which concessions are available depends on
+the game phase, see table 2 in the rules. During an AR companies in receivership
+are also available for auction.
+
+The AR is round robin, a player may on his turn start an auction for a
+concession or the option to purchase shares of a company in receivership. The
+minimum bid is 100M and a bid must always be a multiple of 10M. Players may
+increase the bid in with multiples of 10M with a mimimum of 10M. Players who
+pass are out of the current auction. Once all players have passed the player
+with the highest bid wins and pays the bid amount to the bank. Now the next
+player has the opportunity to auction an item if available. If there are no
+more items to auction then the AR is over. If all players pass on the
+opportunity to start an auction then the AR is also over, unauctioned items are
+available again during the next AR. If there are no items to auction then the
+AR is skipped.
+
+\subsection{Stock Rounds}
+A player can sell one or more shares in all SRs except in the first SR. After
+that he may do one of the following: buy a share, start a railway company, start
+a public mining company, or exercise a purchase option. If the player does not
+want to sell shares and perform an action he may pass.
+
+\subsection{Shares and directorship}
+Companies can have the following share splits:
+\begin{itemize}
+	\item Two 50\% shares (public mining companies only).
+	\item Five 20\% shares.
+	\item Ten 10\% shares.
+\end{itemize}
+
+The value of a share in a company is always the stock value, regardless of the
+split. A company that has been formed and that is not in receivership always has
+a director. The directorship can change when a player has more share in the
+company than its current director. Exception: the director of a railway company
+remains its director when he owns the associated concession and the company has
+not bought its compulsory train yet, or it becomes insolvent.
+
+\subsection{Selling shares}
+Shares are sold in blocks for a single company. Sold shares end up in the bank
+pool. The player receives the current stock value per share sold from the bank.
+Exception: when a company has not yet operated then the player receives the
+value one step below the current stock value. The company's stock value is
+reduced by one step per share sold. Exceptions:
+\begin{itemize}
+	\item The stock value of a company which has not yet operated does not
+	change.
+	\item Stock values can not drop below 50M.
+	\item The stock value of the MHE is not affected by sales once it has
+	bought a 5-train.
+\end{itemize}
+
+The stock marker of a company is always placed on the bottom of a stack after a
+sale, even if it did not move.
+
+Shares may not be sold during the first SR, the director of a railway company
+that has not yet operated cannot sell below 20\% of this company. Otherwise a
+director may sell all his shares as long as another players owns at least 20\%
+of the company so he can become the new director. Ties for ownership are
+resolved in turn order starting from the old director. Up to 80\% of shares may
+be in the bank pool. Companies in receivership have 100\% of their shares in the
+bank pool.
+
+\subsection{Buying shares}
+A player may buy shares in a company if they are available, he has not sold
+shares in that company in this SR, and the company is not in receivership. The
+player decides whether to buy from the bank pool or IPO if there are shares in
+both. Shares in the MHE are always in the bank pool. When buying from the bank
+pool the player pays the share value to the bank and receives the share. When
+buying from the IPO there can be one of two cases:
+\begin{itemize}
+	\item The company has not yet operated. The money is paid to the bank and
+	the player receives the share. When a company floats it is fully
+	capitalized by the bank.
+	\item If the company has operated, the player pays the stock price to the
+	company and receives the share. These shares are the result of the company
+	issuing new shares.
+\end{itemize}
+
+\subsection{Floating a company}
+A railway company floats as soon as the third of its original is bought from the
+IPO. The company is floated and receives 5 times its current stock value as
+starting capital. The remaining two shares are placed in the bank pool.
+
+\end{document}
