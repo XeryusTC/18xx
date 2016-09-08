@@ -200,4 +200,48 @@ cash gets turn card \#1, the player with the second most cash gets turn card
 \#2, etc. If two players are tied for cash, then the prior turn order between
 them is preserved. This is the order that is used during the next AR and SR.
 
+\section{Operating rounds}
+In each OR, first the private mines operate in ascending order. Then the public
+companies (both mines and railways) operate in descending order of stock value.
+The MHE always operates last.
+
+\subsection{Machines and rolling stock}
+
+Machines can only be owned by mining companies. Trains can only be owned by
+railway companies, diesel railcars are also trains. Machines and trains are
+referred to as units. Switchers can be owned by both. All mines start with a
+1-machine, the MHE starts with a 1 train. There is one 1 train. 2-units and up
+can be bought as either a machine or a train. Units of size 5 are unlimited.
+Diesel railcars can be bought in the first set of ORs in Phase 5.
+
+Switchers are available after the first 2 unit has been bought. Switchers bought
+from the bank are always the same size has the highest unit sold (if a 3 unit
+has been sold, then 3 switchers are available). An unlimited number of switchers
+are available.
+
+The following restrictions apply:
+\begin{itemize}
+	\item Trains and railcars are only tradeable between railway companies.
+	\item A railway company may own at most one diesel railcar.
+	\item Private mining companies may own at most one switcher.
+	\item A public mining company may own as many switchers as the number of
+	mines that it owns.
+	\item Railway companies may own as many switchers as they want.
+	\item Switchers can be traded between all companies.
+	\item Machines can never be traded between companies.
+\end{itemize}
+
+\subsection{Track building}
+
+
+\subsection{Operation of Private Mining Companies}
+Private Mining Companies start with a treasury of 0M. Their operation consists
+of the following steps in order:
+
+\subsubsection{Track Building}
+A private mining company is allowed to build and upgrade track as long as it is
+not connected to state railway track. It is considered connected when there is
+a continuous track from the mine's hex to some state railway track. Usual rules
+for track building apply.
+
 \end{document}
