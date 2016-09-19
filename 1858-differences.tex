@@ -1,7 +1,12 @@
 \documentclass[a4paper,twocolumn]{article}
 
+\usepackage[a4paper]{fullpage}
+\usepackage[compact]{titlesec}
+\usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
 \usepackage[all]{hypcap}
+
+\setlist{nosep}
 
 \title{1858 differences from 18xx}
 \author{Designed by Ian D Wilson\\
@@ -128,7 +133,7 @@ This may not be done by a player at his/her certificate limit.
 	the left of the player who initiated the auction.
 \end{itemize}
 
-\subsubsection{Start Public company}
+\subsubsection{Start Public company}\label{sec:startpublic}
 \begin{itemize}
 	\item Before Phase 5 players may only start Public companies by exchanging a
 	Private company. They place an unopened Public company's stock marker on the
@@ -162,7 +167,239 @@ may not be started in the first stock round.
 	\item The Priority Deal card moves to the player who sits to the left of the
 	last player who bought or sold something. If there were no transactions then
 	the Priority Deal does not move.
-	\item The round marker is moved to OR1.
 \end{itemize}
+
+\section{Operating rounds}
+There are always two ORs between SRs. First the Private companies operate in
+ascending numerical order, then the Public companies operate in descending order
+of stock price.
+
+\subsection{Routes}
+A route consists of a continuous broad or narrow-gauge track segment with at
+least one city with a station marker of the Company on it, in case of Private
+companies it includes at least one home hex. It may not go through any small or
+large city, port or France more than once. When it goes to a port or France it
+must terminate there. It may not visit a track segment multiple times, with the
+exception of the junctions at the centre of four-way or five-way brown or grey
+plain tiles. It may not go through stations completely filled with tokens of
+other companies. Tiles with several separate stations (like Madrid in yellow)
+may only be included once per route.
+
+\subsection{Gauges}
+There are three track gauges: broad-gauge (solid black), narrow-gauge (dashed),
+and dual-gauge (white with black border) which is considered to be both broad
+and narrow-gauge. M-trains may only run on narrow and dual-gauge track, other
+trains may only run on broad and dual-gauge track. When tracing a route a
+company may only change gauge at stations at which it has a station token.
+Narrow-gauge may not be build until Phase 3.
+
+\subsection{Actions}
+Public companies may execute actions in the following order, some are optional.
+
+\subsubsection{Lay or Upgrade Track (optional)}
+\begin{itemize}
+	\item Companies may lay yellow track or upgrade track according to the
+	regular permissive rules.
+	\item For an additional fee of P20 a company may do a track operation on a
+	different hex. Both operations may be an upgrade.
+	\item If the new track on either of the two hexes is completely narrow-gauge
+	then the fee is only P10.
+	\item Yellow tiles (of all types) are considered to be unlimited.
+	\item If there is no track in a Private company's home hex, a company may
+	lay track there. Private companies may not lay track anywhere until there is
+	a tile in one of their home hexes (preprinted track satisfies this
+	condition).
+	\item The track must form part of a route of the company.
+	\item Track may not run into the blank side of a red, blue, or grey hex. Nor
+	may it run into an impassable blue border.
+	\item Companies must pay terrain costs when building track when the hex has
+	a sum of money on it. Costs are halved when playing narrow-gauge track. The
+	Director may pay cash from hand if the company has insufficient funds.
+	\item Private companies do not pay terrain costs for their home hexes, but
+	its owner must pay costs for extra lays and other terrain costs from his
+	hand.
+	\item Public companies must always pay for terrain costs, even if it owns
+	the relevant Private company.
+	\item Only one of the indicated Privates may lay yellow track on a home hex
+	until it closes, unless the Public company owns the Private company.
+	\item Private companies may lay track outside their home hexes given that
+	they can trace a route there.
+	\item Private companies may not upgrade track.
+	\item Private companies placing track in their home hex must align it with
+	the indicated route that connects other home hexes of the Privates shown on
+	that hex.
+	\item When upgrading a company must be able to trace a route to new track.
+	This requirement is lifted for upgrading cities.
+	\item There is no charge for upgrading.
+	\item Some hexes have yellow or green track printed on them, these should be
+	treated as if there is already a yellow or green tile on them. They may be
+	upgraded like usual but no track may be placed there.
+	\item When there is a choice of city upgrade, the one with the most legal
+	exits must be picked.
+	\item The brown P tile is reserved for Porto (B9)
+\end{itemize}
+
+\subsubsection{Place station marker (optional)}
+\begin{itemize}
+	\item A company may place one station marker per OR on a vacant space on a
+	large city on one of its routes.
+	\item A company may only have one station marker per hex.
+	\item Each Public company has three station markers, those placed during
+	formation are free (exception: see \autoref{sec:startpublic}).
+	\item Prior to the Private Closure Round, one city space on each Private's
+	home hexes is reserved for that Private. Public companies must leave that
+	space free if the Private has not been closed yet. If there are two Privates
+	then there are also two reserved spaces. If a Public company owns a Private
+	company then it may ignore the restrictions for that Private company.
+	\item The cost for placing a marker is P20 if the marker is in the same
+	province as another station marker for the Public company. Otherwise the
+	cost is P40 per provincial boundary crossed. The cost is determined from the
+	closest station marker, in provinces, irrespective from the route involved.
+\end{itemize}
+
+\subsubsection{Run trains}
+\begin{itemize}
+	\item Trains must run different routes that must not share track segments
+	with other trains. They may meet or cross at ports, large cities and France.
+	\item The value of the route is the sum of the values of all visited ports,
+	cities and off-board areas. Skipped cities do not count. The value of France
+	corresponds to the current Phase number.
+	\item The earnings of a company are the sum of the values of the routes run
+	by its trains, plus the printed income of all Private companies that it
+	owns.
+	\item The highest legal income announced by any player must be declared, but
+	players are not required to announce a higher income than the Director.
+	\item There are four types of trains available:
+	\begin{enumerate}
+		\item H-trains run up to the given number in hexes on broad or
+		dual-gauge track. Each hex border they cross counts toward this number.
+		They count the value of all cities, ports and France they visit.
+		\item M-trains run up to the indicated number of ports, large cities or
+		France on narrow-gauge or dual-gauge. Small cities do not count towards
+		the value of the train, but do count towards the value of the run. The
+		route may start/end in a small city.
+		\item E-trains run up to the indicated value of ports, large cities or
+		France on broad or dual-gauge track. Small cities must be skipped, large
+		cities may not.
+		\item D-trains run like E-trains but double the value of the run.
+	\end{enumerate}
+	\item Wounded trains run as normal but the value of their run is halved.
+\end{itemize}
+
+\subsubsection{Distribute earnings}
+\begin{itemize}
+	\item Companies may withhold their earnings, pay in full, or pay half/half.
+	\item When paying in full, divide the earnings by the number of shares (five
+	or ten), round down to the nearest integer and pay that much per share to
+	the shareholders. The remainder is paid to the company treasury.
+	\item When paying half, halve the earnings before distributing them like
+	full earnings. The remaining half goes into the Company Treasury.
+	\item Payments for shares in the company's treasury go to the company,
+	payments for shares in the Bank Pool remain in the Bank.
+	\item If the company withholds its earnings, or its earnings are zero then
+	its stock marker is moved one space to the left.
+	\item If ten times the divident per share is equal to or greater than the
+	current stock value then the stock marker moves one space to the right,
+	unless it is already at the highest value. \emph{This means that 5-share
+	companies need to pay only half of their stock value to move on the stock
+	market, while 10-share companies need to pay their full stock price.}
+	\item If a stock marker does not move then its relative position is
+	maintained. If it does move then it always move to the bottom of a pile.
+\end{itemize}
+
+\subsubsection{Close Private companies}
+All private companies owned by the Public company now close and are removed
+from the game. The Public company receives their face values from the Bank into
+its Treasury.
+
+\subsubsection{Purchase trains (optional)}
+\begin{itemize}
+	\item A company may buy a train from another company with its Director's
+	consent. The price paid must be at least P1 and at may not exceed the active
+	Company's Treasury.
+	\item A company may buy any train from the Bank Pool, or the newest train
+	from the Bank (or, in Phase 7, a 5D). It must pay face value to the Bank.
+	\item The company may buy multiple trains in the same OR if it has the space
+	and resources. The effects of a purchase are applied as soon as the trains
+	are bought.
+	\item If a company is over its train limit it must discard trains to the
+	Bank Pool without compensation until it is within the train limit. If more
+	than one Company has excess trains they choose which to discard in operating
+	order.
+	\item Wounded trains count towards the train limit, but they may be
+	discarded at will during this step.
+	\item Discarded wounded trains are removed from the game, they do not end up
+	in the Bank Pool.
+	\item If the company has no train then it is not required to buy one, but if
+	it elects not to buy one its stock value drops by one step.
+	\item A company with a train may use Emergency Fund Raising to buy a train
+	from the Bank or Bank Pool:
+	\begin{enumerate}
+		\item The Company may sell shares in its treasury to the Bank Pool, it
+		receives the current stock price for each of them. The stock value drops
+		by one step after this sale. The company may not sell more shares than
+		it needs to buy a train. This may be done in a Company's first OR.
+		\item The Director may put in cash from hand. He may not sell shares to
+		raise more money. The Director may not put in more cash than the Company
+		needs to buy a train.
+	\end{enumerate}
+	The company may buy any train from the Bank or Bank Pool, even if it has
+	enough money for the cheapest train.
+	\item If the company has cash left over after Emergency Fund Raising then it
+	may use this money to buy a second train from another Company or the Bank
+	according to the normal rules.
+	\item If Emergency Fund Raising does not raise enough money for the company
+	to buy a train, no money is raised and the Company does not buy a train.
+	\item Some trains have a broad-gauge train on one side and a narrow-gauge
+	train on the other side. When bought from the bank the buyer decides which
+	way the train should go. This decision cannot be changed, even if the train
+	is returned to the Bank Pool.
+\end{itemize}
+
+\subsubsection{Redeem and issue stock (optional)}
+\begin{itemize}
+	\item A company may buy back one or all of its shares in the Bank Pool and
+	place them into its Treasury. It must pay the current stock value for each
+	one bought.
+	\item A company may sells shares in its Treasury to the Bank Pool. It
+	receives the current stock price for each of them. This reduces the stock
+	value by one step. A Company may not do this in its first operating turn.
+\end{itemize}
+
+\section{Private Closure Round}\label{sec:closure}
+At the end of the OR that the first 5E/4M Train is bought, there is the Private
+Closure Round. In numerical order, each player-owned Private Company must be
+exchanged for a share in a Public Company, or be exchanged for cash from the
+Bank.
+\begin{itemize}
+	\item When exchanging for a share, the Public company must be able to trace
+	a route from one of its station markers to a home hex of the Private
+	Company, or have a station marker on one of its home hexes. If there is a
+	Treasury share and the Director gives permission then the player receives a
+	Treasury share and the Company receives the face value of the private into
+	its Treasury from the Bank. It may then place a station token on one of the
+	Private's home hexes according to the normal rules.
+
+	If there is no Treasury share or the Director does not give permission then
+	the player may take a share from the Bank Pool if there are any. The Public
+	Company does not receive any money. The Public Company must still have a
+	route to one of the Private Company's home hexes.
+	\item The player may receive face value of the Private in cash from the
+	Bank.
+\end{itemize}
+In all cases the Private company is closed and removed from play. Unsold Private
+Companies are also removed from play. A player may go over the normal 60\%
+holding limit during this round, and he is not obliged to sell back to 60\% at
+any point.
+
+\section{Ending the game}
+The game ends at the end of the next OR after the Bank runs out of money. If the
+Bank runs out during an OR the game ends at the end of that OR. If the Bank runs
+out of money during an SR then the SR continues as normal and one more OR is
+played. If the Bank becomes solvent again, the game still ends as described.
+
+A player's total wealth is the value of his stock at their current stock price
+plus his cash in hand. Private companies are worth face value. The richest
+player wins.
 
 \end{document}
