@@ -1,0 +1,183 @@
+- date: 2017-01-25
+  game: 1822
+  players:
+      boris: 12793
+      ot: 13722
+      xeryus: 17035
+- date: 2017-01-18
+  game: 1859
+  players:
+      boris: 3462
+      ot: 5349
+      mischa: 5493
+      xeryus: 3452
+      wouter: 3502
+- date: 2017-01-18
+  game: 18FL
+  players:
+      boris: 8742
+      ot: 7218
+      xeryus: 9361
+- date: 2017-01-11
+  game: 1846
+  players:
+      boris: 6496
+      ot: 5178
+      xeryus: 5600
+      wouter: 6530
+- date: 2017-01-11
+  game: Harzbahn 1873
+  players:
+      boris: 30529
+      xeryus: 39383
+- date: 2017-01-04
+  game: 1846
+  players:
+      boris: 8904
+      ot: 6562
+      mischa: 8754
+- date: 2017-01-04
+  game: 18FL
+  players:
+      boris: 12150
+      ot: 11463
+- date: 2016-12-28
+  game: 1846
+  players:
+      boris: 4248
+      ot: 4208
+      xeryus: 5927
+      wouter: 6118
+- date: 2016-12-21
+  game: 1846
+  players:
+      boris: 7640
+      ot: 5742
+      xeryus: 6963
+- date: 2016-12-21
+  game: 1846
+  players:
+      boris: 7562
+      ot: 6993
+      xeryus: 6756
+- date: 2016-12-14
+  game: '1880: China'
+  players:
+      boris: 11310
+      ot: 8396
+      mischa: 9180
+      xeryus: 7539
+- date: 2016-12-07
+  game: '1880: China'
+  players:
+      boris: 4658
+      ot: 6581
+      mischa: 4456
+      xeryus: 6392
+- date: 2016-11-30
+  game: 18VA
+  players:
+      boris: 2169
+      ot: 2604
+      mischa: 5174
+      xeryus: 3543
+- date: 2016-11-23
+  game: 1860
+  players:
+      boris: 6885
+      ot: 8603
+      xeryus: 6663
+- date: 2016-11-13
+  game: 18MEX
+  players:
+      boris: 3361
+      ot: 5453
+      mischa: 3906
+      xeryus: 3857
+- date: 2016-11-12
+  game: 1822
+  players:
+      boris: 12336
+      ot: 12738
+      mischa: 12887
+      xeryus: 8080
+- date: 2016-11-11
+  game: 1817
+  players:
+      boris: 0
+      ot: 12711
+      mischa: 14880
+      xeryus: 0
+- date: 2016-11-09
+  game: 1817
+  players:
+      boris: 2765
+      ot: 4210
+      xeryus: 5519
+- date: 2016-11-02
+  game: 18MEX
+  players:
+      boris: 5207
+      ot: 5688
+      mischa: 6088
+- date: 2016-10-26
+  game: 1858
+  players:
+      boris: 8800
+      ot: 7900
+      mischa: 6400
+      xeryus: 8000
+- date: 2016-10-19
+  game: 1817
+  players:
+      boris: 12100
+      ot: 10500
+      xeryus: 11700
+- date: 2016-10-12
+  game: 1849
+  players:
+      boris: 3069
+      ot: 3959
+      mischa: 4647
+      xeryus: 4776
+- date: 2016-10-06
+  game: 1867
+  players:
+      boris: 5944
+      ot: 3689
+      xeryus: 5416
+- date: 2016-10-05
+  game: '1830: Nobody expects the CPR'
+  players:
+      boris: 5518
+      mischa: 5724
+      xeryus: 5244
+- date: 2016-09-25
+  game: 1817
+  players:
+      boris: 10600
+      ot: 8400
+      mischa: 12900
+      xeryus: 9200
+- date: 2016-09-14
+  game: '1865: Sardinia'
+  players:
+      boris: 5592
+      ot: 5016
+      xeryus: 4709
+- date: 2016-09-14
+  game: '1865: Sardinia'
+  players:
+      boris: 7332
+      ot: 8313
+      xeryus: 8218
+- date: 2016-09-03
+  game: '1893: Cologne'
+  players:
+      boris: 8100
+      xeryus: 9200
+- date: 2016-09-03
+  game: '1893: Cologne'
+  players:
+      boris: 9659
+      xeryus: 8885
