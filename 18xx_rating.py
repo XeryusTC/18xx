@@ -8,12 +8,77 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
 from datetime import date
+from collections import namedtuple
 
 ELO_K = 32
 OLD_F1 = [10, 8, 6, 5, 4, 3, 2, 1]
 NEW_F1 = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1]
 GLICKO_FACTOR = 173.7178
 GLICKO_PERIOD = date(2017, 5, 1) - date(2017, 4, 1)
+WIN  = 1
+DRAW = 0.5
+LOSS = 0
+
+PlayerScore = namedtuple('PlayerScore', ('name', 'score'))
+
+class Player:
+    tau = 0.5
+    epsilon = 0.00001
+
+    def __init__(self, name):
+        self.name = name.title()
+        self.scores = []
+        self.played = 0
+        self.wins = 0
+        self.elo = 1000
+        self.elo_history = []
+        self.old_F1_points = 0
+        self.new_F1_points = 0
+        self.glicko_mu = 0
+        self.glicko_mu_hist = []
+        self.glicko_phi = 350/GLICKO_FACTOR
+        self.glicko_phi_hist = []
+        self.glicko_sigma = 0.06
+
+    def calculate_new_elo(self, other_elo, scores):
+        expected = 0
+        for other in range(len(other_elo)):
+            Q = 10 ** ((other_elo[other] - self.elo) / 400)
+            expected += 1 / (1 + Q)
+        K = ELO_K
+        if self.played < 20:
+            K *= self.played / 20
+        self._new_elo = self.elo + K * (sum(scores) - expected)
+
+    def update_elo(self, game_num):
+        self.elo = self._new_elo
+        del self._new_elo
+        self.elo_history.append((game_num, self.elo))
+
+    def calculate_new_glicko(self, other_glicko_mu, other_glicko_phi,
+                             other_scores):
+        pass
+
+    def update_glicko(self, game_num):
+        self.glicko_mu = self._new_glicko_mu
+        self.glicko_phi = self._new_glicko_phi
+        self.glicko_sigma = self._new_glicko_sigma
+        del self._new_glicko_mu, self._new_glicko_phi, self._new_glicko_sigma
+
+
+class Game:
+    def __init__(self, name):
+        self.name = name
+        self.times_played = 0
+
+
+class Play:
+    def __init__(self, game, date, players):
+        self.game = game
+        self.date = date
+        self.ranking = tuple(PlayerScore(p[0], p[1])
+            for p in sorted(players.items(), key=lambda p: p[1], reverse=True))
+
 
 def main():
     with open('results.yml') as f:
@@ -22,105 +87,78 @@ def main():
     players = {}
     dates = []
     games = {}
+    plays = []
     total_games = len(data)
-    game_num = 0
 
     for game in reversed(data):
-        print(f"Processing game {game['date']}")
-        game_num += 1
+        print(f"Processing game from {game['date']}")
         dates.append(game['date'])
+        # Register a play of this game
         if game['game'] not in games:
-            games[game['game']] = {
-                'times_played': 0,
-            }
-        games[game['game']]['times_played'] += 1
+            games[game['game']] = Game(game['game'])
+        games[game['game']].times_played += 1
 
-        ranked = []
+        # Record the information of the play
+        play = Play(games[game['game']], game['date'], game['players'])
+        plays.append(play)
+        game_num = len(plays)
+
+        # Record information for all players
         for name, score in game['players'].items():
             name = name.lower()
             if name not in players:
-                players[name] = {
-                    'scores': [],
-                    'played': 0,
-                    'last_game': game['date'],
-                    'elo': 1000,
-                    'elo_history': [],
-                    'old_points': 0,
-                    'new_points': 0,
-                    'wins': 0,
-                    # Glicko
-                    # - rating
-                    'glicko_mu': 0,
-                    'glicko_mu_hist': [(game_num-1, 0)],
-                    # - RD
-                    'glicko_phi': 350/GLICKO_FACTOR,
-                    'glicko_phi_hist': [(game_num-1, 350/GLICKO_FACTOR)],
-                    # - volatility
-                    'glicko_sigma': 0.06,
-                    'glicko_sigma_hist': [(game_num-1, 0.05)],
-                }
-            players[name]['scores'].append(score)
-            players[name]['played'] += 1
+                players[name] = Player(name)
+            players[name].scores.append(score)
+            players[name].played += 1
 
-            # Find place in ranking
-            if ranked == []:
-                ranked = [name]
-            else:
-                for r in range(len(ranked)):
-                    if players[ranked[r]]['scores'][-1] < score:
-                        ranked.insert(r, name)
-                        break
-                else:
-                    ranked.append(name)
-        print('  Rank of players:', ', '.join((p.title() for p in ranked)))
+        print('  Rank of players:', ', '.join((p.name.title()
+                                               for p in play.ranking)))
 
-        # Increase number of wins
-        players[ranked[0]]['wins'] += 1
+        # Increase number of wins for the winning player
+        players[play.ranking[0].name].wins += 1
 
-        # Calculate ELO score
-        expected = {}
-        scored = {}
-        other_elo = {}
-        for name in ranked:
-            scored[name] = len(ranked) - ranked.index(name) - 1
-            expected[name] = 0
-            other_elo[name] = 0
-            # Calculate expected score
-            for other in ranked:
-                # Don't compare against self
-                if name == other:
+        for player in range(len(play.ranking)):
+            scores = []
+            elos = []
+            glicko_mus = []
+            glicko_phis = []
+            for other in range(len(play.ranking)):
+                if other == player:
                     continue
-                # If players have same score, make it a draw
-                if players[name]['elo'] == players[other]['elo']:
-                    if ranked.index(name) > ranked.index(other):
-                        scored[name] -= .5
-                    else:
-                        scored[name] += .5
-                # Update expected score
-                Q = 10**((players[other]['elo'] - players[name]['elo']) / 400)
-                expected[name] += 1 / (1 + Q)
-                other_elo[name] += players[other]['elo']
-        # Update ELO scores
-        for name in ranked:
-            K = ELO_K
-            if players[name]['played'] < 20:
-                K *= players[name]['played'] / 20
-            players[name]['elo'] += K * (scored[name] - expected[name])
-            players[name]['elo_history'].append((game_num,
-                                                 players[name]['elo']))
-            print(f"  {name.title()} new ELO: {players[name]['elo']:.0f}")
+                elos.append(players[play.ranking[other].name].elo)
+                glicko_mus.append(players[play.ranking[other].name].glicko_mu)
+                glicko_phis.append(
+                    players[play.ranking[other].name].glicko_phi)
+
+                # Determine win/loss against each opponent
+                if play.ranking[player].score > play.ranking[other].score:
+                    scores.append(WIN)
+                elif play.ranking[player].score < play.ranking[other].score:
+                    scores.append(LOSS)
+                else:
+                    scores.append(DRAW)
+
+            # Calculate new score (but don't update)
+            players[play.ranking[player].name].calculate_new_elo(elos, scores)
+            players[play.ranking[player].name].calculate_new_glicko(
+                glicko_mus, glicko_phis, scores)
+        for player in play.ranking:
+            players[player.name].update_elo(game_num)
+            #players[player.name].update_glicko(game_num)
+            print("  {} new ELO: {:.0f}".format(player.name.title(),
+                                                players[player.name].elo))
 
         # Distribute F1 points
-        for i in range(len(ranked)):
-            players[ranked[i]]['old_points'] += OLD_F1[i]
-            players[ranked[i]]['new_points'] += NEW_F1[i]
+        for i in range(len(play.ranking)):
+            players[play.ranking[i].name].old_F1_points += OLD_F1[i]
+            players[play.ranking[i].name].new_F1_points += NEW_F1[i]
 
         # Calculate glicko scores
-        calculate_glicko(players, ranked, game['date'], game_num)
+        #calculate_glicko(players, ranked, game['date'], game_num)
         # Update last played game
-        players[name]['last_game'] = game['date']
+        #players[name]['last_game'] = game['date']
 
-    html_results('rankings.html', players, games, total_games, dates)
+    html_results('rankings.html', players, games, total_games, dates, plays)
     plot_elo(players)
     plot_glicko(players)
 
@@ -241,7 +279,7 @@ def plot_elo(players):
     plt.clf()
     labels = []
     for player in players:
-        elo = np.array(players[player]['elo_history']).T
+        elo = np.array(players[player].elo_history).T
         line, = plt.plot(*elo, 'x-', label=player.title())
         labels.append(line)
     plt.title('History of ELO ratings')
@@ -256,9 +294,9 @@ def plot_glicko(players):
     ax = plt.gca() # Get current axes
     for player in players:
         # plot
-        glicko_mu = np.array(players[player]['glicko_mu_hist']).T
+        glicko_mu = np.array(players[player].glicko_mu_hist).T
         glicko_mu[1] = glicko_mu[1] * GLICKO_FACTOR + 1500
-        glicko_phi = np.array(players[player]['glicko_phi_hist']).T[1]
+        glicko_phi = np.array(players[player].glicko_phi_hist).T[1]
         glicko_phi *= GLICKO_FACTOR * 2
         line, = plt.plot(*glicko_mu, label=player.title())
         labels.append(line)
@@ -285,7 +323,7 @@ def plot_glicko(players):
     plt.legend(handles=labels, loc=2)
     plt.savefig('rankings_glicko.png')
 
-def html_results(filename, players, games, total_games, dates):
+def html_results(filename, players, games, total_games, dates, plays):
     dates.sort()
     with open(filename, 'w') as f:
         f.write(f'''<!doctype html>
@@ -315,30 +353,31 @@ def html_results(filename, players, games, total_games, dates):
             <th>Median score</th>
         </tr>''')
 
-        for player, stats in sorted(players.items()):
-            total_score = sum(stats['scores'])
-            mean_score = total_score / stats['played']
-            mean_old_F1 = stats['old_points'] / stats['played']
-            mean_new_F1 = stats['new_points'] / stats['played']
-            ci_lo       = stats['glicko_mu'] - 2 * stats['glicko_phi']
-            ci_hi       = stats['glicko_mu'] + 2 * stats['glicko_phi']
+        for name, player in sorted(players.items()):
+            total_score = sum(player.scores)
+            mean_score = total_score / player.played
+            mean_old_F1 = player.old_F1_points / player.played
+            mean_new_F1 = player.new_F1_points / player.played
+            ci_lo       = player.glicko_mu - 2 * player.glicko_phi
+            ci_hi       = player.glicko_mu + 2 * player.glicko_phi
             f.write(f'''<tr style="text-align:right;">
-                <td>{player.title()}</td>
-                <td>{stats['played']}</td>
-                <td>{stats['wins']}</td>
-                <td>{stats['wins'] / stats['played']:.2f}</td>
-                <td>{stats['elo']:.0f}</td>
-                <td>{stats['glicko_mu'] * GLICKO_FACTOR + 1500:.2f}</td>
-                <td>{stats['glicko_phi'] * GLICKO_FACTOR:.2f}</td>
+                <td>{name.title()}</td>
+                <td>{player.played}</td>
+                <td>{player.wins}</td>
+                <td>{player.wins / player.played:.2f}</td>
+                <td>{player.elo:.0f}</td>
+                <td>{player.glicko_mu * GLICKO_FACTOR + 1500:.2f}</td>
+                <td>{player.glicko_phi * GLICKO_FACTOR:.2f}</td>
                 <td>
                     {ci_lo * GLICKO_FACTOR + 1500:.2f}-{ci_hi * GLICKO_FACTOR + 1500:.2f}
                 </td>
-                <td>{stats['old_points']} ({mean_old_F1:.2f})</td>
-                <td>{stats['new_points']} ({mean_new_F1:.2f})</td>
-                <td>{total_score}</td>
-                <td>{mean_score:.2f}</td>
-                <td>{statistics.median(stats['scores']):.0f}</td>
+                <td>{player.old_F1_points} ({mean_old_F1:.2f})</td>
+                <td>{player.new_F1_points} ({mean_new_F1:.2f})</td>
+                <td>{sum(player.scores)}</td>
+                <td>{statistics.mean(player.scores):.2f}</td>
+                <td>{statistics.median(player.scores):.0f}</td>
             </tr>''')
+
         f.write('''</table><br />
         <img src="rankings_elo.png" />
         <img src="rankings_glicko.png" />
@@ -360,11 +399,33 @@ def html_results(filename, players, games, total_games, dates):
             <th>Name</th>
             <th>Played</th>
         </tr>''')
-        for game, stats in sorted(games.items()):
+        for name, game in sorted(games.items()):
             f.write(f'''<tr>
-                <td>{game}</td>
-                <td>{stats['times_played']}</td>
+                <td>{game.name}</td>
+                <td>{game.times_played}</td>
             </tr>''')
+        f.write('''</table>
+            <h1>Recorded games</h1>
+            <table border="1">
+            <tr>
+                <th>Date</th>
+                <th>Game</th>
+                <th>Player</th>
+                <th>Score</th>
+            </tr>''')
+        for play in reversed(plays):
+            f.write(f'''<tr>
+                <td rowspan="{len(play.ranking)}">{play.date}</td>
+                <td rowspan="{len(play.ranking)}">{play.game.name}</td>
+                ''')
+            first = True
+            for player in play.ranking:
+                if not first:
+                    f.write('<tr>')
+                f.write(f'''<td>{player.name.title()}</td>
+                    <td>{player.score}</td>
+                </tr>''')
+
         f.write('</table></body></html>\n')
 
 if __name__ == '__main__':
