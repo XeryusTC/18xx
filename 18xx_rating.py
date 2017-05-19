@@ -55,15 +55,87 @@ class Player:
         del self._new_elo
         self.elo_history.append((game_num, self.elo))
 
-    def calculate_new_glicko(self, other_glicko_mu, other_glicko_phi,
-                             other_scores):
-        pass
+    def calculate_new_glicko(self, other_mu, other_phi, scores):
+        mu_prime = 0
+        phi_prime = 0
+        sigma_prime = 0
+        v = 0
+        delta = 0
+        for other in range(len(other_mu)):
+            e = self._glicko_E(self.glicko_mu, other_mu[other],
+                               other_phi[other])
+            v += np.power(self._glicko_g(other_phi[other]), 2) * e * (1 - e)
+            delta += self._glicko_g(other_phi[other]) * (scores[other] - e)
+        v = 1 / v
+        Delta = v * delta
+        sigma_prime = self._glicko_sigma_iter(self.glicko_sigma,
+                                              self.glicko_phi, Delta, v)
+        # Update the RD (phi)
+        phi_star = np.sqrt(np.power(self.glicko_phi, 2) +
+            np.power(sigma_prime, 2))
+        phi_prime = 1 / np.sqrt(1 / (phi_star * phi_star) + 1/v)
+        mu_prime = self.glicko_mu + np.power(phi_prime, 2) * delta
+        # Store new Glicko variables for later update
+        self._new_glicko_mu = mu_prime
+        self._new_glicko_phi = phi_prime
+        self._new_glicko_sigma = sigma_prime
+
+    def calculate_glicko_inactive(self):
+        phi_prime = np.sqrt(np.power(self.glicko_phi, 2) +
+            np.power(self.glicko_sigma, 2))
+        self._new_glicko_mu = self.glicko_mu
+        self._new_glicko_phi = phi_prime
+        self._new_glicko_sigma = self.glicko_sigma
 
     def update_glicko(self, game_num):
         self.glicko_mu = self._new_glicko_mu
         self.glicko_phi = self._new_glicko_phi
         self.glicko_sigma = self._new_glicko_sigma
         del self._new_glicko_mu, self._new_glicko_phi, self._new_glicko_sigma
+        self.glicko_mu_hist.append((game_num, self.glicko_mu))
+        self.glicko_phi_hist.append((game_num, self.glicko_phi))
+
+    def _glicko_g(self, phi):
+        """Reduce impact based on RD"""
+        return 1 / np.sqrt(1 + (3 * phi * phi) / (np.pi * np.pi))
+
+    def _glicko_E(self, mu, other_mu, other_phi):
+        """Expected score"""
+        return 1 / (1 + np.exp(-self._glicko_g(other_phi) * (mu - other_mu)))
+
+    def _glicko_f(self, x, Delta, phi, v, a):
+        """f(x) from sigma iteration step 1"""
+        ex = np.power(np.e, x)
+        numer1 = ex * (Delta * Delta - phi * phi - v - ex)
+        denom1 = 2 * np.power(phi * phi + v * ex, 2)
+        return (numer1 / denom1) - (x - a) / (self.tau * self.tau)
+
+    def _glicko_sigma_iter(self, sigma, phi, Delta, v):
+        # Step 2
+        a = np.log(sigma * sigma)
+        A = a
+        if (Delta * Delta) > (phi * phi + v):
+            B = np.log(Delta*Delta - phi*phi - v)
+        else:
+            k = 1
+            while self._glicko_f((a - k * self.tau), Delta, phi, v, a) < 0:
+                k += 1
+            B = a - k * self.tau
+        # Step 3
+        fA = self._glicko_f(A, Delta, phi, v, a)
+        fB = self._glicko_f(B, Delta, phi, v, a)
+        # Step 4
+        while abs(B - A) > self.epsilon:
+            C = A + (A - B) * fA / (fB - fA)
+            fC = self._glicko_f(C, Delta, phi, v, a)
+            if fC * fB < 0:
+                A = B
+                fA = fB
+            else:
+                fA = fA / 2
+            B = C
+            fB = fC
+        return np.power(np.e, A / 2)
 
 
 class Game:
@@ -142,138 +214,30 @@ def main():
             players[play.ranking[player].name].calculate_new_elo(elos, scores)
             players[play.ranking[player].name].calculate_new_glicko(
                 glicko_mus, glicko_phis, scores)
+        # Update Glicko ratings for players who didn't play
+        for player in players:
+            if player not in (p.name for p in play.ranking):
+                players[player].calculate_glicko_inactive()
+        # Update scores
         for player in play.ranking:
             players[player.name].update_elo(game_num)
-            #players[player.name].update_glicko(game_num)
             print("  {} new ELO: {:.0f}".format(player.name.title(),
                                                 players[player.name].elo))
+        for player in players:
+            players[player].update_glicko(game_num)
+            print("  {} new Glicko: {:.2f}+={:.2f}".format(player.title(),
+                players[player].glicko_mu * GLICKO_FACTOR + 1500,
+                players[player].glicko_phi * GLICKO_FACTOR))
 
         # Distribute F1 points
         for i in range(len(play.ranking)):
             players[play.ranking[i].name].old_F1_points += OLD_F1[i]
             players[play.ranking[i].name].new_F1_points += NEW_F1[i]
 
-        # Calculate glicko scores
-        #calculate_glicko(players, ranked, game['date'], game_num)
-        # Update last played game
-        #players[name]['last_game'] = game['date']
-
+    # Export results
     html_results('rankings.html', players, games, total_games, dates, plays)
     plot_elo(players)
     plot_glicko(players)
-
-def calculate_glicko(players, ranked, game_date, game_num):
-    tau = 0.5
-    epsilon = 0.0001
-    def g(phi):
-        return 1 / np.sqrt(1 + (3 * phi * phi) / (np.pi * np.pi))
-
-    def E(mu, other_mu, other_phi):
-        return 1 / (1 + np.exp(-g(other_phi) * (mu - other_mu)))
-
-    def sigma_prime_iter(sigma, phi, Delta, v):
-        # Step 1
-        def f(x):
-            n1 = np.e ** x * (Delta ** 2 - phi ** 2 - v - np.e ** x)
-            d1 = 2 * (phi ** 2 + v + e ** x) ** 2
-            n2 = x - a
-            d2 = tau * tau
-            return (n1 / d1) - (n2 / d2)
-        # Step 2
-        A = a = np.log(sigma * sigma)
-        if Delta ** 2 > phi ** 2 + v:
-            B = np.log(Delta ** 2 - phi ** 2 - v)
-        else:
-            k = 1
-            while f(a - k * tau) < 0:
-                k += 1
-            B = a - k * tau
-        # Step 3
-        fA = f(A)
-        fB = f(B)
-        # Step 4
-        while abs(B - A) > epsilon:
-            C = A + (A - B) * fA / (fB - fA)
-            fC = f(C)
-            if fC * fB < 0:
-                A = B
-                fA = fB
-            else:
-                fA /= 2
-            B = C
-            fB = fC
-        # Step 5
-        return np.e ** (A / 2)
-
-    phi_primes = {}
-    mu_primes = {}
-    sigma_primes = {}
-    for player in ranked:
-        mu = players[player]['glicko_mu']
-        # Calculate v and Delta
-        v = 0
-        delta = 0
-        for other in ranked:
-            # Dont calculate glicko against self
-            if player == other:
-                continue
-            # Get the score
-            if players[player]['scores'][-1] > players[other]['scores'][-1]:
-                score = 1
-            elif players[player]['scores'][-1] == players[other]['scores'][-1]:
-                score = 0.5
-            else:
-                score = 0
-            other_mu  = players[other]['glicko_mu']
-            other_phi = players[other]['glicko_phi']
-            e = E(mu, other_mu, other_phi)
-            v += g(other_phi) ** 2 * e * (1 - e)
-            delta += g(other_phi) * (score - e)
-        v = 1 / v
-        Delta = v * delta
-
-        # Calculate the actual ratings
-        phi = players[player]['glicko_phi']
-        sigma_prime = sigma_prime_iter(players[player]['glicko_sigma'],
-                                       phi, Delta, v)
-        phi_star = np.sqrt(phi * phi + sigma_prime * sigma_prime)
-        phi_prime = 1 / np.sqrt((1 / (phi_star * phi_star)) + 1 / v)
-        mu_prime = mu + phi_prime * phi_prime * delta
-        # Store new ratings for later updates
-        phi_primes[player]   = phi_prime
-        mu_primes[player]    = mu_prime
-        sigma_primes[player] = sigma_prime
-
-    # Update the ratings
-    for player in ranked:
-        players[player]['glicko_mu'] = mu_primes[player]
-        players[player]['glicko_phi'] = phi_primes[player]
-        players[player]['glicko_sigma'] = sigma_primes[player]
-        # Update the history
-        players[player]['glicko_mu_hist'].append((game_num, mu_primes[player]))
-        players[player]['glicko_phi_hist'].append((game_num,
-                                                   phi_primes[player]))
-        players[player]['glicko_sigma_hist'].append((game_num,
-                                                     sigma_primes[player]))
-        print(f'  {player.title()} new glicko:',
-              f'{mu_primes[player] * GLICKO_FACTOR + 1500:.2f} +=',
-              f'{phi_primes[player] * GLICKO_FACTOR:.2f}')
-    # Increase RD for unranked players
-    for player in players:
-        # Skip just calculated players
-        if player in ranked:
-            continue
-        if game_date - players[player]['last_game'] > GLICKO_PERIOD:
-            phi = players[player]['glicko_phi']
-            sigma = players[player]['glicko_sigma']
-            phi_prime = np.sqrt(phi * phi + sigma * sigma)
-            players[player]['glicko_phi'] = phi_prime
-            # Update the player's history
-            players[player]['glicko_mu_hist'].append(
-                (game_num, players[player]['glicko_mu']))
-            players[player]['glicko_phi_hist'].append((game_num, phi_prime))
-            players[player]['glicko_sigma_hist'].append((game_num, sigma))
-            print(f'  {player.title()} glicko RD updated due to inactivity')
 
 def plot_elo(players):
     plt.clf()
