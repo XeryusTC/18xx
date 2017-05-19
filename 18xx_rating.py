@@ -4,6 +4,7 @@
 from pprint import pprint
 import yaml
 import statistics
+import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
 from datetime import date
@@ -252,14 +253,32 @@ def plot_elo(players):
 def plot_glicko(players):
     plt.clf()
     labels = []
+    ax = plt.gca() # Get current axes
     for player in players:
+        # plot
         glicko_mu = np.array(players[player]['glicko_mu_hist']).T
         glicko_mu[1] = glicko_mu[1] * GLICKO_FACTOR + 1500
-        glicko_sigma = np.array(players[player]['glicko_sigma_hist']).T[1]
-        glicko_sigma *= GLICKO_FACTOR * 2
-        line = plt.errorbar(*glicko_mu, label=player.title(),
-                            yerr=glicko_sigma)
+        glicko_phi = np.array(players[player]['glicko_phi_hist']).T[1]
+        glicko_phi *= GLICKO_FACTOR * 2
+        line, = plt.plot(*glicko_mu, label=player.title())
         labels.append(line)
+
+        # Plot confidence interval
+        low = glicko_mu.copy()
+        high = glicko_mu.copy()
+        low[1] -= 2 * glicko_phi
+        high[1] += 2 * glicko_phi
+        plt.plot(*low, '-', color=line.get_color(), alpha=0.5,
+                 linewidth=line.get_linewidth()*.5)
+        plt.plot(*high, '-', color=line.get_color(), alpha=0.5,
+                 linewidth=line.get_linewidth()*.5)
+        poly_coords = np.concatenate([low.T, np.flipud(high.T)])
+        poly = mpatches.Polygon(poly_coords,
+                                facecolor=line.get_color(),
+                                alpha=0.1)
+        ax.add_patch(poly)
+
+    ax.set_ylim(1000, 2000)
     plt.title('History of Glicko ratings')
     plt.xlabel('Games played')
     plt.ylabel('Glicko rating')
