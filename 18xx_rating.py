@@ -4,6 +4,8 @@
 from pprint import pprint
 import yaml
 import statistics
+import matplotlib.pyplot as plt
+import numpy as np
 
 elo_K = 32
 old_F1 = [10, 8, 6, 5, 4, 3, 2, 1]
@@ -17,13 +19,18 @@ def main():
     dates = []
     games = {}
     total_games = len(data)
+    game_num = 0
 
     for game in reversed(data):
         print(f"Processing game {game['date']}")
+        game_num += 1
         dates.append(game['date'])
         if game['game'] not in games:
-            games[game['game']] = 0
-        games[game['game']] += 1
+            games[game['game']] = {
+                'times_played': 0,
+            }
+        games[game['game']]['times_played'] += 1
+
         ranked = []
         for name, score in game['players'].items():
             name = name.lower()
@@ -32,6 +39,7 @@ def main():
                     'scores': [],
                     'played': 0,
                     'elo': 1000,
+                    'elo_history': [],
                     'old_points': 0,
                     'new_points': 0,
                     'wins': 0,
@@ -49,7 +57,7 @@ def main():
                         break
                 else:
                     ranked.append(name)
-        print('  Rank of players:', ', '.join(ranked))
+        print('  Rank of players:', ', '.join((p.title() for p in ranked)))
 
         # Increase number of wins
         players[ranked[0]]['wins'] += 1
@@ -79,7 +87,12 @@ def main():
                 other_elo[name] += players[other]['elo']
         # Update ELO scores
         for name in ranked:
-            players[name]['elo'] += elo_K * (scored[name] - expected[name])
+            K = elo_K
+            if players[name]['played'] < 20:
+                K *= players[name]['played'] / 20
+            players[name]['elo'] += K * (scored[name] - expected[name])
+            players[name]['elo_history'].append((game_num,
+                                                 players[name]['elo']))
             print(f"  {name.title()} new ELO: {players[name]['elo']:.0f}")
 
         # Distribute F1 points
@@ -87,27 +100,34 @@ def main():
             players[ranked[i]]['old_points'] += old_F1[i]
             players[ranked[i]]['new_points'] += new_F1[i]
 
-    html_results(players, 'rankings.html')
+    html_results('rankings.html', players, games, total_games, dates)
+    plot_elo(players)
 
-def html_results(players, filename):
+def plot_elo(players):
+    labels = []
+    for player in players:
+        elo = np.array(players[player]['elo_history']).T
+        line, = plt.plot(*elo, 'x-', label=player.title())
+        labels.append(line)
+    plt.title('History of ELO ratings')
+    plt.xlabel('Games played')
+    plt.ylabel('ELO rating')
+    plt.legend(handles=labels)
+    plt.savefig('rankings_elo.png')
+
+def html_results(filename, players, games, total_games, dates):
+    dates.sort()
     with open(filename, 'w') as f:
-        f.write('''<!doctype html>
+        f.write(f'''<!doctype html>
         <html>
         <head><title>18xx rankings</title></head>
         <body>
-        <table border="1">
-            <tr><td></td>''')
-        for i in range(len(new_F1)):
-            f.write(f"<th>{i+1}</th>")
-        f.write('</tr><tr><th>Old F1</th>')
-        for score in old_F1:
-            f.write(f"<td>{score}</td>")
-        f.write('</tr><tr><th>New F1</th>')
-        for score in new_F1:
-            f.write(f"<td>{score}</td>")
-        f.write('''</tr>
-        </table><br />
+        <h1>Global stats</h1>
+        Total games played: {total_games}<br />
+        First recorded game: {dates[0]}<br />
+        Last recorded game: {dates[-1]}<br />
 
+        <h1>Player stats</h1>
         <table border="1">
         <tr>
             <th>Name</th>
@@ -125,19 +145,45 @@ def html_results(players, filename):
         for player, stats in sorted(players.items()):
             total_score = sum(stats['scores'])
             mean_score = total_score / stats['played']
+            mean_old_F1 = stats['old_points'] / stats['played']
+            mean_new_F1 = stats['new_points'] / stats['played']
             f.write(f'''<tr style="text-align:right;">
                 <td>{player.title()}</td>
                 <td>{stats['played']}</td>
                 <td>{stats['wins']}</td>
                 <td>{stats['wins'] / stats['played']:.2f}</td>
                 <td>{stats['elo']:.0f}</td>
-                <td>{stats['old_points']}</td>
-                <td>{stats['new_points']}</td>
+                <td>{stats['old_points']} ({mean_old_F1:.2f})</td>
+                <td>{stats['new_points']} ({mean_new_F1:.2f})</td>
                 <td>{total_score}</td>
                 <td>{mean_score:.2f}</td>
                 <td>{statistics.median(stats['scores']):.0f}</td>
             </tr>''')
+        f.write('''</table><br />
+        <img src="rankings_elo.png" />
+        <table border="1">
+            <tr><td></td>''')
+        for i in range(len(new_F1)):
+            f.write(f"<th>{i+1}</th>")
+        f.write('</tr><tr><th>Old F1</th>')
+        for score in old_F1:
+            f.write(f"<td>{score}</td>")
+        f.write('</tr><tr><th>New F1</th>')
+        for score in new_F1:
+            f.write(f"<td>{score}</td>")
 
+        f.write('''</tr></table>
+        <h1>Game stats</h1>
+        <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Played</th>
+        </tr>''')
+        for game, stats in sorted(games.items()):
+            f.write(f'''<tr>
+                <td>{game}</td>
+                <td>{stats['times_played']}</td>
+            </tr>''')
         f.write('</table></body></html>\n')
 
 if __name__ == '__main__':
