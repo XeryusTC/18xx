@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from datetime import date
 from collections import namedtuple
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 ELO_K = 32
 OLD_F1 = [10, 8, 6, 5, 4, 3, 2, 1]
@@ -38,7 +39,7 @@ class Player:
         self.glicko_mu_hist = []
         self.glicko_phi = 350/GLICKO_FACTOR
         self.glicko_phi_hist = []
-        self.glicko_sigma = 0.06
+        self.glicko_sigma = 0.03
 
     def calculate_new_elo(self, other_elo, scores):
         expected = 0
@@ -288,109 +289,18 @@ def plot_glicko(players):
     plt.savefig('rankings_glicko.png')
 
 def html_results(filename, players, games, total_games, dates, plays):
+    env = Environment(
+        loader=FileSystemLoader('templates'),
+        autoescape=select_autoescape(['html', 'xml'])
+    )
+    template = env.get_template('rankings.html.j2')
     dates.sort()
     with open(filename, 'w') as f:
-        f.write(f'''<!doctype html>
-        <html>
-        <head><title>18xx rankings</title></head>
-        <body>
-        <h1>Global stats</h1>
-        Total games played: {total_games}<br />
-        First recorded game: {dates[0]}<br />
-        Last recorded game: {dates[-1]}<br />
-
-        <h1>Player stats</h1>
-        <table border="1">
-        <tr>
-            <th>Name</th>
-            <th>Played</th>
-            <th>Wins</th>
-            <th>Ratio</th>
-            <th>ELO</th>
-            <th>Glicko rating</th>
-            <th>Glicko RD</th>
-            <th>Glicko 95% CI</th>
-            <th>Old F1 points</th>
-            <th>New F1 points</th>
-            <th>Total score</th>
-            <th>Mean score</th>
-            <th>Median score</th>
-        </tr>''')
-
-        for name, player in sorted(players.items()):
-            total_score = sum(player.scores)
-            mean_score = total_score / player.played
-            mean_old_F1 = player.old_F1_points / player.played
-            mean_new_F1 = player.new_F1_points / player.played
-            ci_lo       = player.glicko_mu - 2 * player.glicko_phi
-            ci_hi       = player.glicko_mu + 2 * player.glicko_phi
-            f.write(f'''<tr style="text-align:right;">
-                <td>{name.title()}</td>
-                <td>{player.played}</td>
-                <td>{player.wins}</td>
-                <td>{player.wins / player.played:.2f}</td>
-                <td>{player.elo:.0f}</td>
-                <td>{player.glicko_mu * GLICKO_FACTOR + 1500:.2f}</td>
-                <td>{player.glicko_phi * GLICKO_FACTOR:.2f}</td>
-                <td>
-                    {ci_lo * GLICKO_FACTOR + 1500:.2f}-{ci_hi * GLICKO_FACTOR + 1500:.2f}
-                </td>
-                <td>{player.old_F1_points} ({mean_old_F1:.2f})</td>
-                <td>{player.new_F1_points} ({mean_new_F1:.2f})</td>
-                <td>{sum(player.scores)}</td>
-                <td>{statistics.mean(player.scores):.2f}</td>
-                <td>{statistics.median(player.scores):.0f}</td>
-            </tr>''')
-
-        f.write('''</table><br />
-        <img src="rankings_elo.png" />
-        <img src="rankings_glicko.png" />
-        <table border="1">
-            <tr><td></td>''')
-        for i in range(len(NEW_F1)):
-            f.write(f"<th>{i+1}</th>")
-        f.write('</tr><tr><th>Old F1</th>')
-        for score in OLD_F1:
-            f.write(f"<td>{score}</td>")
-        f.write('</tr><tr><th>New F1</th>')
-        for score in NEW_F1:
-            f.write(f"<td>{score}</td>")
-
-        f.write('''</tr></table>
-        <h1>Game stats</h1>
-        <table border="1">
-        <tr>
-            <th>Name</th>
-            <th>Played</th>
-        </tr>''')
-        for name, game in sorted(games.items()):
-            f.write(f'''<tr>
-                <td>{game.name}</td>
-                <td>{game.times_played}</td>
-            </tr>''')
-        f.write('''</table>
-            <h1>Recorded games</h1>
-            <table border="1">
-            <tr>
-                <th>Date</th>
-                <th>Game</th>
-                <th>Player</th>
-                <th>Score</th>
-            </tr>''')
-        for play in reversed(plays):
-            f.write(f'''<tr>
-                <td rowspan="{len(play.ranking)}">{play.date}</td>
-                <td rowspan="{len(play.ranking)}">{play.game.name}</td>
-                ''')
-            first = True
-            for player in play.ranking:
-                if not first:
-                    f.write('<tr>')
-                f.write(f'''<td>{player.name.title()}</td>
-                    <td>{player.score}</td>
-                </tr>''')
-
-        f.write('</table></body></html>\n')
+        f.write(template.render(players=players, games=games,
+                                dates=dates, plays=plays,
+                                GLICKO_FACTOR=GLICKO_FACTOR, NEW_F1=NEW_F1,
+                                OLD_F1=OLD_F1))
+        return
 
 if __name__ == '__main__':
     main()

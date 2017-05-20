@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>18xx rankings</title>
+</head>
+<body>
+
+<h1>Global stats</h1>
+Total games played: {{ plays | length }}<br />
+First recorded game: {{ dates[0] }}<br />
+Last recorded game: {{ dates[-1] }}<br />
+
+<h1>Player statistics</h1>
+<table border="1">
+	<tr>
+		<th>Name</th>
+		<th>Played</th>
+		<th>Wins</th>
+		<th>Ratio</th>
+		<th>ELO</th>
+		<th>Glicko rating</th>
+		<th>Glicko RD</th>
+		<th>Glicko 95% CI</th>
+		<th>Old F1 points</th>
+		<th>New F1 points</th>
+		<th>Total score</th>
+		<th>Mean score</th>
+	</tr>
+	{% for name, player in players|dictsort %}
+		<tr style="text-align:right;">
+			<td>{{ name | title }}</td>
+			<td>{{ player.played }}</td>
+			<td>{{ player.wins }}</td>
+			<td>{{ (player.wins / player.played) | round(2) }}</td>
+			<td>{{ player.elo | round }}</td>
+			<td>{{ (player.glicko_mu * GLICKO_FACTOR + 1500) | round(2) }}</td>
+			<td>{{ (player.glicko_phi * GLICKO_FACTOR) | round(2) }}</td>
+			<td>
+				{{ ((player.glicko_mu - 2 * player.glicko_phi)
+				* GLICKO_FACTOR + 1500) | round(2)}}-{{ ((player.glicko_mu
+				+ 2* player.glicko_phi) * GLICKO_FACTOR + 1500) | round(2) }}
+			</td>
+			<td>{{ player.old_F1_points }}</td>
+			<td>{{ player.new_F1_points }}</td>
+			<td>{{ player.scores | sum }}</td>
+			<td>
+				{{ ((player.scores|sum) / (player.scores|length)) | round(2) }}
+			</td>
+		</tr>
+	{% endfor %}
+</table>
+
+<h2>Historic rankings</h2>
+<img src="rankings_elo.png" alt="History of ELO ranking">
+<img src="rankings_glicko.png" alt="History of Glicko ranking">
+
+<p>
+For details on ELO see
+<a href="https://en.wikipedia.org/wiki/Elo_rating_system">Wikipedia</a>. For
+details on Glicko see
+<a href="https://en.wikipedia.org/wiki/Glicko_rating_system">Wikipedia</a> or
+<a href="http://glicko.net/glicko.html">the Glicko website</a>.
+</p>
+
+<h2>F1 scores</h2>
+<table border="1">
+	<tr>
+		<td></td>
+		{% for i in range(NEW_F1 | length) %}
+			<th>{{ i + 1 }}</th>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td>Old F1</td>
+		{% for score in OLD_F1 %}
+			<td>{{ score }}</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td>New F1</td>
+		{% for score in NEW_F1 %}
+			<td>{{ score }}</td>
+		{% endfor %}
+	</tr>
+</table>
+
+<h1>Game statistics</h1>
+<table border="1">
+	<tr>
+		<th>Name</th>
+		<th>Plays</th>
+	</tr>
+	{% for name, game in games | dictsort %}
+		<tr>
+			<td>{{ game.name }}</td>
+			<td>{{ game.times_played }}</td>
+		</tr>
+	{% endfor %}
+</table>
+
+<h1>Recorded games</h1>
+<table border="1">
+	<tr>
+		<th>Date</th>
+		<th>Game</th>
+		<th>Player</th>
+		<th>Score</th>
+	</tr>
+	{% for play in plays | reverse %}
+		<tr>
+			<td rowspan="{{ play.ranking | length }}">{{ play.date }}</td>
+			<td rowspan="{{ play.ranking | length }}">{{ play.game.name }}</td>
+		{% for player in play.ranking %}
+			{% if not loop.first %}
+				<tr>
+			{% endif %}
+			<td>{{ player.name | title }}</td>
+			<td>{{ player.score }}</td>
+			</tr>
+		{% endfor %}
+	{% endfor %}
+</table>
+
+</body>
+</html>
