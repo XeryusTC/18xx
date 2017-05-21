@@ -247,7 +247,7 @@ def plot_elo(players):
     plt.title('History of ELO ratings')
     plt.xlabel('Games played')
     plt.ylabel('ELO rating')
-    plt.legend(handles=labels)
+    plt.legend(handles=labels, loc=2)
     plt.savefig('rankings_elo.png')
 
 def plot_glicko(players):
