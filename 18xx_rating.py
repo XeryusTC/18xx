@@ -23,8 +23,8 @@ LOSS = 0
 PlayerScore = namedtuple('PlayerScore', ('name', 'score'))
 
 class Player:
-    tau = 0.5
-    epsilon = 0.00001
+    glicko_tau = 0.5
+    glicko_epsilon = 0.00001
 
     def __init__(self, name):
         self.name = name.title()
@@ -46,10 +46,7 @@ class Player:
         for other in range(len(other_elo)):
             Q = 10 ** ((other_elo[other] - self.elo) / 400)
             expected += 1 / (1 + Q)
-        K = ELO_K
-        if self.played < 20:
-            K *= self.played / 20
-        self._new_elo = self.elo + K * (sum(scores) - expected)
+        self._new_elo = self.elo + ELO_K * (sum(scores) - expected)
 
     def update_elo(self, game_num):
         self.elo = self._new_elo
@@ -109,7 +106,7 @@ class Player:
         ex = np.power(np.e, x)
         numer1 = ex * (Delta * Delta - phi * phi - v - ex)
         denom1 = 2 * np.power(phi * phi + v * ex, 2)
-        return (numer1 / denom1) - (x - a) / (self.tau * self.tau)
+        return (numer1 / denom1) - (x - a) / (self.glicko_tau*self.glicko_tau)
 
     def _glicko_sigma_iter(self, sigma, phi, Delta, v):
         # Step 2
@@ -119,14 +116,14 @@ class Player:
             B = np.log(Delta*Delta - phi*phi - v)
         else:
             k = 1
-            while self._glicko_f((a - k * self.tau), Delta, phi, v, a) < 0:
+            while self._glicko_f((a-k*self.glicko_tau), Delta, phi, v, a) < 0:
                 k += 1
-            B = a - k * self.tau
+            B = a - k * self.glicko_tau
         # Step 3
         fA = self._glicko_f(A, Delta, phi, v, a)
         fB = self._glicko_f(B, Delta, phi, v, a)
         # Step 4
-        while abs(B - A) > self.epsilon:
+        while abs(B - A) > self.glicko_epsilon:
             C = A + (A - B) * fA / (fB - fA)
             fC = self._glicko_f(C, Delta, phi, v, a)
             if fC * fB < 0:
