@@ -37,9 +37,9 @@ class Player:
         self.old_F1_points = 0
         self.new_F1_points = 0
         self.glicko_mu = 0
-        self.glicko_mu_hist = []
+        self.glicko_mu_hist = [(0, 0)]
         self.glicko_phi = 350/GLICKO_FACTOR
-        self.glicko_phi_hist = []
+        self.glicko_phi_hist = [(0, 350/GLICKO_FACTOR)]
         self.glicko_sigma = 0.06
 
     def calculate_new_elo(self, other_elo, scores):
@@ -329,6 +329,7 @@ def plot_glicko(players):
                                 alpha=0.1)
         ax.add_patch(poly)
 
+    ax.set_xlim(0, players[player].glicko_mu_hist[-1][0])
     ax.set_ylim(1000, 2000)
     plt.title('History of Glicko ratings')
     plt.xlabel('Games played')
