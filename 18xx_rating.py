@@ -6,6 +6,7 @@ import yaml
 import statistics
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
+import matplotlib.mlab as mlab
 import numpy as np
 from datetime import date
 from collections import namedtuple
@@ -228,6 +229,7 @@ def main():
     html_results('rankings.html', players, games, total_games, dates, plays)
     plot_elo(players)
     plot_glicko(players)
+    plot_glicko_gaussians(players)
 
 def periodic_glicko(plays, players):
     period = date(2017, 1, 28) - date(2017, 1, 1)
@@ -333,6 +335,23 @@ def plot_glicko(players):
     plt.ylabel('Glicko rating')
     plt.legend(handles=labels, loc=2)
     plt.savefig('rankings_glicko.png')
+
+def plot_glicko_gaussians(players):
+    plt.clf()
+    labels = []
+    ax = plt.gca()
+    for name, player in players.items():
+        mu = player.glicko_mu * GLICKO_FACTOR + 1500
+        sigma = player.glicko_phi * GLICKO_FACTOR
+        x = np.linspace(mu - 3 * sigma, mu + 3 * sigma, 100)
+        line, = plt.plot(x, mlab.normpdf(x, mu, sigma), label=name.title())
+        labels.append(line)
+    ax.set_xlim(1000, 2000)
+    ax.get_yaxis().set_ticks([])
+    plt.title('Current Glicko ratings')
+    plt.xlabel('Rating')
+    plt.legend(handles=labels, loc=2)
+    plt.savefig('rankings_glicko_gaussians.png')
 
 def html_results(filename, players, games, total_games, dates, plays):
     env = Environment(
