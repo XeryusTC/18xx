@@ -39,7 +39,7 @@ class Player:
         self.glicko_mu_hist = []
         self.glicko_phi = 350/GLICKO_FACTOR
         self.glicko_phi_hist = []
-        self.glicko_sigma = 0.03
+        self.glicko_sigma = 0.06
 
     def calculate_new_elo(self, other_elo, scores):
         expected = 0
@@ -184,6 +184,11 @@ def main():
         print('  Rank of players:', ', '.join((p.name.title()
                                                for p in play.ranking)))
 
+        # Distribute F1 points
+        for i in range(len(play.ranking)):
+            players[play.ranking[i].name].old_F1_points += OLD_F1[i]
+            players[play.ranking[i].name].new_F1_points += NEW_F1[i]
+
         # Increase number of wins for the winning player
         players[play.ranking[0].name].wins += 1
 
@@ -210,32 +215,76 @@ def main():
 
             # Calculate new score (but don't update)
             players[play.ranking[player].name].calculate_new_elo(elos, scores)
-            players[play.ranking[player].name].calculate_new_glicko(
-                glicko_mus, glicko_phis, scores)
-        # Update Glicko ratings for players who didn't play
-        for player in players:
-            if player not in (p.name for p in play.ranking):
-                players[player].calculate_glicko_inactive()
-        # Update scores
+        # Update ELO
         for player in play.ranking:
             players[player.name].update_elo(game_num)
             print("  {} new ELO: {:.0f}".format(player.name.title(),
                                                 players[player.name].elo))
-        for player in players:
-            players[player].update_glicko(game_num)
-            print("  {} new Glicko: {:.2f}+={:.2f}".format(player.title(),
-                players[player].glicko_mu * GLICKO_FACTOR + 1500,
-                players[player].glicko_phi * GLICKO_FACTOR))
 
-        # Distribute F1 points
-        for i in range(len(play.ranking)):
-            players[play.ranking[i].name].old_F1_points += OLD_F1[i]
-            players[play.ranking[i].name].new_F1_points += NEW_F1[i]
+    # Update glicko
+    periodic_glicko(plays, players)
 
     # Export results
     html_results('rankings.html', players, games, total_games, dates, plays)
     plot_elo(players)
     plot_glicko(players)
+
+def periodic_glicko(plays, players):
+    period = date(2017, 1, 28) - date(2017, 1, 1)
+    plays.sort(key=lambda p: p.date)
+
+    period_start = plays[0].date
+    period_players = {}
+    for play in plays:
+        if play.date > period_start + period:
+            print('Calculating Glicko period', period_start, '-', play.date)
+            print('Duels this period:',
+                max(len(p['mus']) for p in period_players.values()))
+            _periodic_glicko_update(players, period_players, plays.index(play))
+            # Reset for next period
+            period_start = play.date
+            period_plays = []
+            period_players = {}
+
+        # Add this plays result to the players
+        for player in range(len(play.ranking)):
+            player_name = play.ranking[player].name
+            if player_name not in period_players:
+                period_players[player_name] = {
+                    'name': play.ranking[player],
+                    'mus': [],
+                    'phis': [],
+                    'scores': [],
+                }
+            for other in range(len(play.ranking)):
+                if other == player:
+                    continue
+                period_players[player_name]['mus'].append(
+                    players[play.ranking[other].name].glicko_mu)
+                period_players[player_name]['phis'].append(
+                    players[play.ranking[other].name].glicko_phi)
+                # Determine win/loss against opponent
+                if play.ranking[player].score > play.ranking[other].score:
+                    period_players[player_name]['scores'].append(WIN)
+                elif play.ranking[player].score < play.ranking[other].score:
+                    period_players[player_name]['scores'].append(LOSS)
+                else:
+                    period_players[player_name]['scores'].append(DRAW)
+    # Do the calculation again after the last game
+    _periodic_glicko_update(players, period_players, plays.index(play))
+
+def _periodic_glicko_update(players, player_scores, game_num):
+    for player, results in player_scores.items():
+        players[player].calculate_new_glicko(results['mus'], results['phis'],
+                                             results['scores'])
+    for player in players:
+        if player not in player_scores:
+            print(player.title(), 'inactive in period')
+            players[player].calculate_glicko_inactive()
+        players[player].update_glicko(game_num)
+        print("  {} new Glicko: {:.2f}+={:.2f}".format(player.title(),
+            players[player].glicko_mu * GLICKO_FACTOR + 1500,
+            players[player].glicko_phi * GLICKO_FACTOR))
 
 def plot_elo(players):
     plt.clf()

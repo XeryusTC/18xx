@@ -32,8 +32,8 @@ Last recorded game: {{ dates[-1] }}<br />
 			<td>{{ name | title }}</td>
 			<td>{{ player.played }}</td>
 			<td>{{ player.wins }}</td>
-			<td>{{ (player.wins / player.played) | round(2) }}</td>
-			<td>{{ player.elo | round }}</td>
+			<td>{{ ((player.wins / player.played) * 100) | int }}%</td>
+			<td>{{ player.elo | round | int }}</td>
 			<td>{{ (player.glicko_mu * GLICKO_FACTOR + 1500) | round(2) }}</td>
 			<td>{{ (player.glicko_phi * GLICKO_FACTOR) | round(2) }}</td>
 			<td>
