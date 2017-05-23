@@ -1,9 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from pprint import pprint
 import yaml
-import statistics
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
@@ -22,6 +20,7 @@ DRAW = 0.5
 LOSS = 0
 
 PlayerScore = namedtuple('PlayerScore', ('name', 'score'))
+
 
 class Player:
     glicko_tau = 0.5
@@ -71,7 +70,7 @@ class Player:
                                               self.glicko_phi, Delta, v)
         # Update the RD (phi)
         phi_star = np.sqrt(np.power(self.glicko_phi, 2) +
-            np.power(sigma_prime, 2))
+                           np.power(sigma_prime, 2))
         phi_prime = 1 / np.sqrt(1 / (phi_star * phi_star) + 1/v)
         mu_prime = self.glicko_mu + np.power(phi_prime, 2) * delta
         # Store new Glicko variables for later update
@@ -81,7 +80,7 @@ class Player:
 
     def calculate_glicko_inactive(self):
         phi_prime = np.sqrt(np.power(self.glicko_phi, 2) +
-            np.power(self.glicko_sigma, 2))
+                            np.power(self.glicko_sigma, 2))
         self._new_glicko_mu = self.glicko_mu
         self._new_glicko_phi = phi_prime
         self._new_glicko_sigma = self.glicko_sigma
@@ -207,12 +206,7 @@ def main():
                     players[play.ranking[other].name].glicko_phi)
 
                 # Determine win/loss against each opponent
-                if play.ranking[player].score > play.ranking[other].score:
-                    scores.append(WIN)
-                elif play.ranking[player].score < play.ranking[other].score:
-                    scores.append(LOSS)
-                else:
-                    scores.append(DRAW)
+                scores.append(_determine_score(play.ranking, player, other))
 
             # Calculate new score (but don't update)
             players[play.ranking[player].name].calculate_new_elo(elos, scores)
@@ -241,11 +235,10 @@ def periodic_glicko(plays, players):
         if play.date > period_start + period:
             print('Calculating Glicko period', period_start, '-', play.date)
             print('Duels this period:',
-                max(len(p['mus']) for p in period_players.values()))
+                  max(len(p['mus']) for p in period_players.values()))
             _periodic_glicko_update(players, period_players, plays.index(play))
             # Reset for next period
             period_start = play.date
-            period_plays = []
             period_players = {}
 
         # Add this plays result to the players
@@ -266,12 +259,8 @@ def periodic_glicko(plays, players):
                 period_players[player_name]['phis'].append(
                     players[play.ranking[other].name].glicko_phi)
                 # Determine win/loss against opponent
-                if play.ranking[player].score > play.ranking[other].score:
-                    period_players[player_name]['scores'].append(WIN)
-                elif play.ranking[player].score < play.ranking[other].score:
-                    period_players[player_name]['scores'].append(LOSS)
-                else:
-                    period_players[player_name]['scores'].append(DRAW)
+                period_players[player_name]['scores'].append(
+                    _determine_score(play.ranking, player, other))
     # Do the calculation again after the last game
     _periodic_glicko_update(players, period_players, plays.index(play))
 
@@ -285,8 +274,15 @@ def _periodic_glicko_update(players, player_scores, game_num):
             players[player].calculate_glicko_inactive()
         players[player].update_glicko(game_num)
         print("  {} new Glicko: {:.2f}+={:.2f}".format(player.title(),
-            players[player].glicko_mu * GLICKO_FACTOR + 1500,
-            players[player].glicko_phi * GLICKO_FACTOR))
+              players[player].glicko_mu * GLICKO_FACTOR + 1500,
+              players[player].glicko_phi * GLICKO_FACTOR))
+
+def _determine_score(ranking, player, opponent):
+    if ranking[player].score > ranking[opponent].score:
+        return WIN
+    elif ranking[player].score < ranking[opponent].score:
+        return LOSS
+    return DRAW
 
 def plot_elo(players):
     plt.clf()
@@ -304,7 +300,7 @@ def plot_elo(players):
 def plot_glicko(players):
     plt.clf()
     labels = []
-    ax = plt.gca() # Get current axes
+    ax = plt.gca()  # Get current axes
     for player in players:
         # plot
         glicko_mu = np.array(players[player].glicko_mu_hist).T
