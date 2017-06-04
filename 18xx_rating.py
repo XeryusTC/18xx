@@ -5,6 +5,7 @@ import yaml
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
+import matplotlib.dates as mdates
 import numpy as np
 from datetime import date
 from collections import namedtuple
@@ -36,9 +37,9 @@ class Player:
         self.old_F1_points = 0
         self.new_F1_points = 0
         self.glicko_mu = 0
-        self.glicko_mu_hist = [(0, 0)]
+        self.glicko_mu_hist = []
         self.glicko_phi = 350/GLICKO_FACTOR
-        self.glicko_phi_hist = [(0, 350/GLICKO_FACTOR)]
+        self.glicko_phi_hist = []
         self.glicko_sigma = 0.06
 
     def calculate_new_elo(self, other_elo, scores):
@@ -212,7 +213,7 @@ def main():
             players[play.ranking[player].name].calculate_new_elo(elos, scores)
         # Update ELO
         for player in play.ranking:
-            players[player.name].update_elo(game_num)
+            players[player.name].update_elo(play.date)
             print("  {} new ELO: {:.0f}".format(player.name.title(),
                                                 players[player.name].elo))
 
@@ -228,17 +229,17 @@ def main():
 def periodic_glicko(plays, players):
     period = date(2017, 1, 28) - date(2017, 1, 1)
     plays.sort(key=lambda p: p.date)
-
     period_start = plays[0].date
     period_players = {}
+
     for play in plays:
         if play.date > period_start + period:
             print('Calculating Glicko period', period_start, '-', play.date)
             print('Duels this period:',
                   max(len(p['mus']) for p in period_players.values()))
-            _periodic_glicko_update(players, period_players, plays.index(play))
+            _periodic_glicko_update(players, period_players, period_start)
             # Reset for next period
-            period_start = play.date
+            period_start += period
             period_players = {}
 
         # Add this plays result to the players
@@ -262,7 +263,7 @@ def periodic_glicko(plays, players):
                 period_players[player_name]['scores'].append(
                     _determine_score(play.ranking, player, other))
     # Do the calculation again after the last game
-    _periodic_glicko_update(players, period_players, plays.index(play))
+    _periodic_glicko_update(players, period_players, period_start + period)
 
 def _periodic_glicko_update(players, player_scores, game_num):
     for player, results in player_scores.items():
@@ -287,10 +288,13 @@ def _determine_score(ranking, player, opponent):
 def plot_elo(players):
     plt.clf()
     labels = []
+    fig, ax = plt.subplots(1)
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
     for player in players:
         elo = np.array(players[player].elo_history).T
         line, = plt.plot(*elo, 'x-', label=player.title())
         labels.append(line)
+    fig.autofmt_xdate()
     plt.title('History of ELO ratings')
     plt.xlabel('Games played')
     plt.ylabel('ELO rating')
@@ -300,7 +304,10 @@ def plot_elo(players):
 def plot_glicko(players):
     plt.clf()
     labels = []
-    ax = plt.gca()  # Get current axes
+    fig, ax = plt.subplots(1)
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+    ax.xaxis.set_major_locator(mdates.DayLocator(interval=28))
+
     for player in players:
         # plot
         glicko_mu = np.array(players[player].glicko_mu_hist).T
@@ -319,14 +326,16 @@ def plot_glicko(players):
                  linewidth=line.get_linewidth()*.5)
         plt.plot(*high, '-', color=line.get_color(), alpha=0.5,
                  linewidth=line.get_linewidth()*.5)
+        continue # TODO: fix drawing polygon, disable for now
         poly_coords = np.concatenate([low.T, np.flipud(high.T)])
         poly = mpatches.Polygon(poly_coords,
                                 facecolor=line.get_color(),
-                                alpha=0.1)
+                                alpha=0.1,
+                                transform=ax.get_xaxis_transform())
         ax.add_patch(poly)
 
-    ax.set_xlim(0, players[player].glicko_mu_hist[-1][0])
     ax.set_ylim(1000, 2000)
+    fig.autofmt_xdate()
     plt.title('History of Glicko ratings')
     plt.xlabel('Games played')
     plt.ylabel('Glicko rating')
