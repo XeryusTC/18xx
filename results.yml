@@ -1,3 +1,22 @@
+- date: 2017-05-31
+  game: '1857'
+  players:
+      ot: 9820
+      boris: 9335
+      xeryus: 6940
+- date: 2017-05-27
+  game: '1853'
+  players:
+      ot: 12162
+      boris: 10987
+      xeryus: 10008
+- date: 2017-05-24
+  game: '1822: The Railways of Great Britain'
+  players:
+      ot: 11268
+      mischa: 10357
+      boris: 5936
+      xeryus: 8836
 - date: 2017-05-23
   game: '1870'
   players:
