@@ -10,6 +10,7 @@ import numpy as np
 from datetime import date
 from collections import namedtuple
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+import calendar
 
 ELO_K = 32
 OLD_F1 = [10, 8, 6, 5, 4, 3, 2, 1]
@@ -220,10 +221,15 @@ def main():
     # Update glicko
     periodic_glicko(plays, players)
 
+    # Determine begin and end dates for display
+    plays.sort(key=lambda p: p.date)
+    begin_date = date(plays[0].date.year, plays[0].date.month, 1)
+    end_date = date(plays[-1].date.year, plays[-1].date.month,
+        calendar.monthrange(plays[-1].date.year, plays[-1].date.month)[1])
     # Export results
     html_results('rankings.html', players, games, total_games, dates, plays)
-    plot_elo(players)
-    plot_glicko(players)
+    plot_elo(players, begin_date, end_date)
+    plot_glicko(players, begin_date, end_date)
     plot_glicko_gaussians(players)
 
 def periodic_glicko(plays, players):
@@ -285,7 +291,7 @@ def _determine_score(ranking, player, opponent):
         return LOSS
     return DRAW
 
-def plot_elo(players):
+def plot_elo(players, begin_date, end_date):
     plt.clf()
     labels = []
     fig, ax = plt.subplots(1)
@@ -294,6 +300,7 @@ def plot_elo(players):
         elo = np.array(players[player].elo_history).T
         line, = plt.plot(*elo, 'x-', label=player.title())
         labels.append(line)
+    ax.set_xlim(begin_date, end_date)
     fig.autofmt_xdate()
     plt.title('History of ELO ratings')
     plt.xlabel('Games played')
@@ -301,12 +308,11 @@ def plot_elo(players):
     plt.legend(handles=labels, loc=2)
     plt.savefig('rankings_elo.png')
 
-def plot_glicko(players):
+def plot_glicko(players, begin_date, end_date):
     plt.clf()
     labels = []
     fig, ax = plt.subplots(1)
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
-    ax.xaxis.set_major_locator(mdates.DayLocator(interval=28))
 
     for player in players:
         # plot
@@ -334,6 +340,7 @@ def plot_glicko(players):
                                 transform=ax.get_xaxis_transform())
         ax.add_patch(poly)
 
+    ax.set_xlim(begin_date, end_date)
     ax.set_ylim(1000, 2000)
     fig.autofmt_xdate()
     plt.title('History of Glicko ratings')
