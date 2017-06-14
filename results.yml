@@ -1,3 +1,21 @@
+- date: 2017-06-13
+  game: '18TN'
+  players:
+      boris: 6584
+      ot: 5525
+      xeryus: 5654
+- date: 2017-06-12
+  game: '1853'
+  players:
+      xeryus: 12677
+      boris: 12545
+      ot: 11299
+- date: 2017-06-06
+  game: '1862EA'
+  players:
+      boris: 10214
+      wouter: 13184
+      ot: 15468
 - date: 2017-05-31
   game: '1857'
   players:
