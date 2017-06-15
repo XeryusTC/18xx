@@ -41,7 +41,7 @@ class Player:
         self.glicko_mu_hist = []
         self.glicko_phi = 350/GLICKO_FACTOR
         self.glicko_phi_hist = []
-        self.glicko_sigma = 0.06
+        self.glicko_sigma = 0.08
 
     def calculate_new_elo(self, other_elo, scores):
         expected = 0
@@ -240,7 +240,8 @@ def periodic_glicko(plays, players):
 
     for play in plays:
         if play.date > period_start + period:
-            print('Calculating Glicko period', period_start, '-', play.date)
+            print('Calculating Glicko period', period_start, '-',
+                period_start + period)
             print('Duels this period:',
                   max(len(p['mus']) for p in period_players.values()))
             _periodic_glicko_update(players, period_players, period_start)
@@ -269,6 +270,8 @@ def periodic_glicko(plays, players):
                 period_players[player_name]['scores'].append(
                     _determine_score(play.ranking, player, other))
     # Do the calculation again after the last game
+    print('Calculating Glicko period', period_start, '-',
+          period_start + period)
     _periodic_glicko_update(players, period_players, period_start + period)
 
 def _periodic_glicko_update(players, player_scores, game_num):
@@ -277,7 +280,7 @@ def _periodic_glicko_update(players, player_scores, game_num):
                                              results['scores'])
     for player in players:
         if player not in player_scores:
-            print(player.title(), 'inactive in period')
+            print(f'    {player.title()} was inactive in period')
             players[player].calculate_glicko_inactive()
         players[player].update_glicko(game_num)
         print("  {} new Glicko: {:.2f}+={:.2f}".format(player.title(),
@@ -292,6 +295,7 @@ def _determine_score(ranking, player, opponent):
     return DRAW
 
 def plot_elo(players, begin_date, end_date):
+    print('Plotting ELO scores')
     plt.clf()
     labels = []
     fig, ax = plt.subplots(1)
@@ -309,6 +313,7 @@ def plot_elo(players, begin_date, end_date):
     plt.savefig('rankings_elo.png')
 
 def plot_glicko(players, begin_date, end_date):
+    print('Plotting Glicko history')
     plt.clf()
     labels = []
     fig, ax = plt.subplots(1)
@@ -350,6 +355,7 @@ def plot_glicko(players, begin_date, end_date):
     plt.savefig('rankings_glicko.png')
 
 def plot_glicko_gaussians(players):
+    print('Plotting current Glicko scores')
     plt.clf()
     labels = []
     ax = plt.gca()
