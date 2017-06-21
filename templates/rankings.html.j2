@@ -81,13 +81,14 @@ details on Glicko see
 	<tr>
 		<th></th>
 		{% for count in positions.keys() %}
-			<th colspan="{{ count + 1 }}">{{ count }} player</th>
 			<th></th>
+			<th colspan="{{ count + 1 }}">{{ count }} player</th>
 		{% endfor %}
 	</tr>
 	<tr>
 		<th>Position</th>
 		{% for count in positions.keys() %}
+			<th></th>
 			{% for pos in range(count) %}
 				<th>
 					{% if loop.index % 10 == 1 and loop.index != 11 %}
@@ -100,13 +101,13 @@ details on Glicko see
 				</th>
 			{% endfor %}
 			<th>Total</th>
-			<th></th>
 		{% endfor %}
 	</tr>
 	{% for name, player in players | dictsort %}
 		<tr class="right">
 			<td>{{ name | title }}</td>
 			{% for count in positions.keys() %}
+				<td></td>
 				{% for pos in range(count) %}
 					<td>
 						{% if name in positions[count] %}
@@ -119,7 +120,6 @@ details on Glicko see
 						{{ positions[count][name].values() | sum }}
 					{% endif %}
 				</td>
-				<td></td>
 			{% endfor %}
 		</tr>
 	{% endfor %}
