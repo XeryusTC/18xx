@@ -11,6 +11,7 @@ from datetime import date, timedelta
 from collections import namedtuple
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import calendar
+import sys
 
 ELO_K = 32
 OLD_F1 = [10, 8, 6, 5, 4, 3, 2, 1]
@@ -42,6 +43,14 @@ class Player:
         self.glicko_phi = 350/GLICKO_FACTOR
         self.glicko_phi_hist = [(start_date, self.glicko_phi)]
         self.glicko_sigma = 0.08
+        self._calculate_color()
+
+    def _calculate_color(self):
+        color = [ord(c) for c in self.name]
+        r = (sum(color[0::3]) % 16) * 17
+        g = (sum(color[1::3]) % 16) * 17
+        b = (sum(color[2::3]) % 16) * 17
+        self.color = f'#{r:0>2x}{g:0>2x}{b:0>2x}'
 
     def calculate_new_elo(self, other_elo, scores):
         expected = 0
@@ -153,7 +162,12 @@ class Play:
 
 
 def main():
-    with open('results.yml') as f:
+    try:
+        filename = sys.argv[1]
+    except IndexError:
+        filename = 'results.yml'
+    print(f'Processing {filename}')
+    with open(filename) as f:
         data = yaml.load(f)
 
     players = {}
@@ -318,7 +332,8 @@ def plot_elo(players, begin_date, end_date):
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
     for player in players:
         elo = np.array(players[player].elo_history).T
-        line, = plt.plot(*elo, 'x-', label=player.title())
+        line, = plt.plot(*elo, 'x-', label=player.title(),
+                         color=players[player].color)
         labels.append(line)
     ax.set_xlim(begin_date, end_date)
     fig.autofmt_xdate()
@@ -341,7 +356,8 @@ def plot_glicko(players, begin_date, end_date):
         glicko_mu[1] = glicko_mu[1] * GLICKO_FACTOR + 1500
         glicko_phi = np.array(players[player].glicko_phi_hist).T[1]
         glicko_phi *= GLICKO_FACTOR * 2
-        line, = plt.plot(*glicko_mu, label=player.title())
+        line, = plt.plot(*glicko_mu, label=player.title(),
+                         color=players[player].color)
         labels.append(line)
 
         # Plot confidence interval
@@ -379,7 +395,8 @@ def plot_glicko_gaussians(players):
         mu = player.glicko_mu * GLICKO_FACTOR + 1500
         sigma = player.glicko_phi * GLICKO_FACTOR
         x = np.linspace(mu - 3 * sigma, mu + 3 * sigma, 100)
-        line, = plt.plot(x, mlab.normpdf(x, mu, sigma), label=name.title())
+        line, = plt.plot(x, mlab.normpdf(x, mu, sigma), label=name.title(),
+                         color=player.color)
         labels.append(line)
     ax.set_xlim(1000, 2000)
     ax.get_yaxis().set_ticks([])
