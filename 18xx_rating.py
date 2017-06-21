@@ -175,6 +175,7 @@ def main():
     games = {}
     plays = []
     positions = {}
+    head2head = {}
     total_games = len(data)
 
     for game in reversed(data):
@@ -222,6 +223,19 @@ def main():
             except KeyError:
                 positions[player_count][player_name][i+1] = 1
 
+        # Calculate head to head scores
+        for i in play.ranking:
+            for j in play.ranking[play.ranking.index(i)+1:]:
+                if i.name < j.name:
+                    player1, player2 = i, j
+                else:
+                    player1, player2 = j, i
+                pair = (player1.name, player2.name)
+                if pair not in head2head:
+                    head2head[pair] = [0, 0]
+                head2head[pair][0] += _determine_score((player1,player2), 0, 1)
+                head2head[pair][1] += _determine_score((player1,player2), 1, 0)
+
         # Calculate ELO
         for player in range(len(play.ranking)):
             scores = []
@@ -232,9 +246,6 @@ def main():
                 if other == player:
                     continue
                 elos.append(players[play.ranking[other].name].elo)
-                glicko_mus.append(players[play.ranking[other].name].glicko_mu)
-                glicko_phis.append(
-                    players[play.ranking[other].name].glicko_phi)
 
                 # Determine win/loss against each opponent
                 scores.append(_determine_score(play.ranking, player, other))
@@ -255,7 +266,7 @@ def main():
     begin_date = date(plays[0].date.year, plays[0].date.month, 1)
     # Export results
     html_results('rankings.html', players, games, total_games, dates, plays,
-        positions)
+        positions, head2head)
     plot_elo(players, begin_date, end_date)
     plot_glicko(players, begin_date, end_date)
     plot_glicko_gaussians(players)
@@ -406,7 +417,7 @@ def plot_glicko_gaussians(players):
     plt.savefig('rankings_glicko_gaussians.png')
 
 def html_results(filename, players, games, total_games, dates, plays,
-                 positions):
+                 positions, head2head):
     env = Environment(
         loader=FileSystemLoader('templates'),
         autoescape=select_autoescape(['html', 'xml'])
@@ -417,7 +428,8 @@ def html_results(filename, players, games, total_games, dates, plays,
         f.write(template.render(players=players, games=games,
                                 dates=dates, plays=plays,
                                 GLICKO_FACTOR=GLICKO_FACTOR, NEW_F1=NEW_F1,
-                                OLD_F1=OLD_F1, positions=positions))
+                                OLD_F1=OLD_F1, positions=positions,
+                                head2head=head2head))
         return
 
 if __name__ == '__main__':

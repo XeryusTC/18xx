@@ -132,6 +132,32 @@ details on Glicko see
 	{% endfor %}
 </table>
 
+<h1>Head to head</h1>
+<p>Indicates how many times a player has beaten another player. Each row
+indicates how often that player has beaten the players in the columns.</p>
+<table>
+	<tr>
+		<td colspan="2"></td>
+		{% for name, player in players | dictsort %}
+			{{ player_name(name, player.color, 'th') }}
+		{% endfor %}
+	</tr>
+	{% for name_row, player_row in players | dictsort %}
+		<tr>
+			{{ player_name(name_row, player_row.color, 'th') }}
+			{% for name_column, player_column in players | dictsort %}
+				<td colspan="2" class="right">
+					{% if (name_row, name_column) in head2head %}
+						{{ head2head[(name_row, name_column)].0 }}
+					{% elif (name_column, name_row) in head2head %}
+						{{ head2head[(name_column, name_row)].1 }}
+					{% endif %}
+				</td>
+			{% endfor %}
+		</tr>
+	{% endfor %}
+</table>
+
 <h1>Game statistics</h1>
 <table>
 	<tr>
