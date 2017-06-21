@@ -89,7 +89,15 @@ details on Glicko see
 		<th>Position</th>
 		{% for count in positions.keys() %}
 			{% for pos in range(count) %}
-				<th>{{ pos + 1}}</th>
+				<th>
+					{% if loop.index % 10 == 1 and loop.index != 11 %}
+						{{ loop.index }}st
+					{% elif loop.index % 10 == 2 and loop.index != 12 %}
+						{{ loop.index }}nd
+					{% else %}
+						{{ loop.index }}th
+					{% endif %}
+				</th>
 			{% endfor %}
 			<th>Total</th>
 			<th></th>
