@@ -371,23 +371,6 @@ def plot_glicko(players, begin_date, end_date):
                          color=players[player].color)
         labels.append(line)
 
-        # Plot confidence interval
-        low = glicko_mu.copy()
-        high = glicko_mu.copy()
-        low[1] -= 2 * glicko_phi
-        high[1] += 2 * glicko_phi
-        plt.plot(*low, '-', color=line.get_color(), alpha=0.5,
-                 linewidth=line.get_linewidth()*.5)
-        plt.plot(*high, '-', color=line.get_color(), alpha=0.5,
-                 linewidth=line.get_linewidth()*.5)
-        continue # TODO: fix drawing polygon, disable for now
-        poly_coords = np.concatenate([low.T, np.flipud(high.T)])
-        poly = mpatches.Polygon(poly_coords,
-                                facecolor=line.get_color(),
-                                alpha=0.1,
-                                transform=ax.get_xaxis_transform())
-        ax.add_patch(poly)
-
     ax.set_xlim(begin_date, end_date)
     ax.set_ylim(1000, 2000)
     fig.autofmt_xdate()
