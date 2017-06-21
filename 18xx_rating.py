@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 import matplotlib.dates as mdates
 import numpy as np
-from datetime import date
+from datetime import date, timedelta
 from collections import namedtuple
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import calendar
@@ -233,46 +233,47 @@ def main():
     plot_glicko_gaussians(players)
 
 def periodic_glicko(plays, players):
-    period = date(2017, 1, 28) - date(2017, 1, 1)
+    period = timedelta(days=28)
     plays.sort(key=lambda p: p.date)
     period_start = plays[0].date
     period_players = {}
 
-    for play in plays:
-        if play.date > period_start + period:
-            print('Calculating Glicko period', period_start, '-',
-                period_start + period)
+    while period_start <= plays[-1].date:
+        print('Calculating Glicko period', period_start, '-',
+            period_start + period)
+        f = lambda p: period_start <= p.date < period_start + period
+        period_plays = list(filter(f, plays))
+        # Register results of all games in this period
+        for play in period_plays:
+            for player in range(len(play.ranking)):
+                player_name = play.ranking[player].name
+                if player_name not in period_players:
+                    period_players[player_name] = {
+                        'name': play.ranking[player],
+                        'mus': [],
+                        'phis': [],
+                        'scores': [],
+                    }
+                for other in range(len(play.ranking)):
+                    if other == player:
+                        continue
+                    period_players[player_name]['mus'].append(
+                        players[play.ranking[other].name].glicko_mu)
+                    period_players[player_name]['phis'].append(
+                        players[play.ranking[other].name].glicko_phi)
+                    # Determine win/loss against opponent
+                    period_players[player_name]['scores'].append(
+                        _determine_score(play.ranking, player, other))
+        # Calculate the scores in this period
+        print('Games this period:', len(period_plays))
+        if period_players.values():
             print('Duels this period:',
-                  max(len(p['mus']) for p in period_players.values()))
-            _periodic_glicko_update(players, period_players, period_start)
-            # Reset for next period
-            period_start += period
-            period_players = {}
-
-        # Add this plays result to the players
-        for player in range(len(play.ranking)):
-            player_name = play.ranking[player].name
-            if player_name not in period_players:
-                period_players[player_name] = {
-                    'name': play.ranking[player],
-                    'mus': [],
-                    'phis': [],
-                    'scores': [],
-                }
-            for other in range(len(play.ranking)):
-                if other == player:
-                    continue
-                period_players[player_name]['mus'].append(
-                    players[play.ranking[other].name].glicko_mu)
-                period_players[player_name]['phis'].append(
-                    players[play.ranking[other].name].glicko_phi)
-                # Determine win/loss against opponent
-                period_players[player_name]['scores'].append(
-                    _determine_score(play.ranking, player, other))
-    # Do the calculation again after the last game
-    print('Calculating Glicko period', period_start, '-',
-          period_start + period)
-    _periodic_glicko_update(players, period_players, period_start + period)
+                max(len(p['mus']) for p in period_players.values()))
+        else:
+            print('No duels this period')
+        _periodic_glicko_update(players, period_players, period_start)
+        period_start += period
+        period_players = {}
 
 def _periodic_glicko_update(players, player_scores, game_num):
     for player, results in player_scores.items():
