@@ -28,7 +28,7 @@ class Player:
     glicko_tau = 0.5
     glicko_epsilon = 0.00001
 
-    def __init__(self, name):
+    def __init__(self, name, start_date):
         self.name = name.title()
         self.scores = []
         self.played = 0
@@ -38,9 +38,9 @@ class Player:
         self.old_F1_points = 0
         self.new_F1_points = 0
         self.glicko_mu = 0
-        self.glicko_mu_hist = []
+        self.glicko_mu_hist = [(start_date, self.glicko_mu)]
         self.glicko_phi = 350/GLICKO_FACTOR
-        self.glicko_phi_hist = []
+        self.glicko_phi_hist = [(start_date, self.glicko_phi)]
         self.glicko_sigma = 0.08
 
     def calculate_new_elo(self, other_elo, scores):
@@ -180,7 +180,7 @@ def main():
         for name, score in game['players'].items():
             name = name.lower()
             if name not in players:
-                players[name] = Player(name)
+                players[name] = Player(name, dates[0])
             players[name].scores.append(score)
             players[name].played += 1
 
@@ -234,13 +234,11 @@ def main():
                                                 players[player.name].elo))
 
     # Update glicko
-    periodic_glicko(plays, players)
+    end_date = periodic_glicko(plays, players)
 
     # Determine begin and end dates for display
     plays.sort(key=lambda p: p.date)
     begin_date = date(plays[0].date.year, plays[0].date.month, 1)
-    end_date = date(plays[-1].date.year, plays[-1].date.month,
-        calendar.monthrange(plays[-1].date.year, plays[-1].date.month)[1])
     # Export results
     html_results('rankings.html', players, games, total_games, dates, plays,
         positions)
@@ -287,9 +285,10 @@ def periodic_glicko(plays, players):
                 max(len(p['mus']) for p in period_players.values()))
         else:
             print('No duels this period')
-        _periodic_glicko_update(players, period_players, period_start)
+        _periodic_glicko_update(players, period_players, period_start + period)
         period_start += period
         period_players = {}
+    return period_start  # End date of the last period
 
 def _periodic_glicko_update(players, player_scores, game_num):
     for player, results in player_scores.items():
