@@ -160,6 +160,7 @@ def main():
     dates = []
     games = {}
     plays = []
+    positions = {}
     total_games = len(data)
 
     for game in reversed(data):
@@ -194,6 +195,20 @@ def main():
         # Increase number of wins for the winning player
         players[play.ranking[0].name].wins += 1
 
+        # Amounts of times finished in each game type
+        player_count = len(play.ranking)
+        if player_count not in positions:
+            positions[player_count] = {}
+        for i in range(len(play.ranking)):
+            player_name = play.ranking[i].name
+            if player_name not in positions[player_count]:
+                positions[player_count][player_name] = {}
+            try:
+                positions[player_count][player_name][i+1] += 1
+            except KeyError:
+                positions[player_count][player_name][i+1] = 1
+
+        # Calculate ELO
         for player in range(len(play.ranking)):
             scores = []
             elos = []
@@ -227,7 +242,8 @@ def main():
     end_date = date(plays[-1].date.year, plays[-1].date.month,
         calendar.monthrange(plays[-1].date.year, plays[-1].date.month)[1])
     # Export results
-    html_results('rankings.html', players, games, total_games, dates, plays)
+    html_results('rankings.html', players, games, total_games, dates, plays,
+        positions)
     plot_elo(players, begin_date, end_date)
     plot_glicko(players, begin_date, end_date)
     plot_glicko_gaussians(players)
@@ -373,7 +389,8 @@ def plot_glicko_gaussians(players):
     plt.legend(handles=labels, loc=2)
     plt.savefig('rankings_glicko_gaussians.png')
 
-def html_results(filename, players, games, total_games, dates, plays):
+def html_results(filename, players, games, total_games, dates, plays,
+                 positions):
     env = Environment(
         loader=FileSystemLoader('templates'),
         autoescape=select_autoescape(['html', 'xml'])
@@ -384,7 +401,7 @@ def html_results(filename, players, games, total_games, dates, plays):
         f.write(template.render(players=players, games=games,
                                 dates=dates, plays=plays,
                                 GLICKO_FACTOR=GLICKO_FACTOR, NEW_F1=NEW_F1,
-                                OLD_F1=OLD_F1))
+                                OLD_F1=OLD_F1, positions=positions))
         return
 
 if __name__ == '__main__':

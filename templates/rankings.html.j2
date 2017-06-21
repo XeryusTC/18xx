@@ -3,6 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<title>18xx rankings</title>
+	<style>
+	table {
+		border-collapse: collapse;
+	}
+	td, th {
+		border: 1px solid black;
+	}
+	.right {
+		text-align: right;
+	}
+	</style>
 </head>
 <body>
 
@@ -12,7 +23,7 @@ First recorded game: {{ dates[0] }}<br />
 Last recorded game: {{ dates[-1] }}<br />
 
 <h1>Player statistics</h1>
-<table border="1">
+<table>
 	<tr>
 		<th>Name</th>
 		<th>Played</th>
@@ -28,7 +39,7 @@ Last recorded game: {{ dates[-1] }}<br />
 		<th>Mean score</th>
 	</tr>
 	{% for name, player in players|dictsort %}
-		<tr style="text-align:right;">
+		<tr class="right">
 			<td>{{ name | title }}</td>
 			<td>{{ player.played }}</td>
 			<td>{{ player.wins }}</td>
@@ -65,30 +76,49 @@ details on Glicko see
 <a href="http://glicko.net/glicko.html">the Glicko website</a>.
 </p>
 
-<h2>F1 scores</h2>
-<table border="1">
+<h1>Player positions</h1>
+<table>
 	<tr>
-		<td></td>
-		{% for i in range(NEW_F1 | length) %}
-			<th>{{ i + 1 }}</th>
+		<th></th>
+		{% for count in positions.keys() %}
+			<th colspan="{{ count + 1 }}">{{ count }} player</th>
+			<th></th>
 		{% endfor %}
 	</tr>
 	<tr>
-		<td>Old F1</td>
-		{% for score in OLD_F1 %}
-			<td>{{ score }}</td>
+		<th>Position</th>
+		{% for count in positions.keys() %}
+			{% for pos in range(count) %}
+				<th>{{ pos + 1}}</th>
+			{% endfor %}
+			<th>Total</th>
+			<th></th>
 		{% endfor %}
 	</tr>
-	<tr>
-		<td>New F1</td>
-		{% for score in NEW_F1 %}
-			<td>{{ score }}</td>
-		{% endfor %}
-	</tr>
+	{% for name, player in players | dictsort %}
+		<tr class="right">
+			<td>{{ name | title }}</td>
+			{% for count in positions.keys() %}
+				{% for pos in range(count) %}
+					<td>
+						{% if name in positions[count] %}
+							{{ positions[count][name][loop.index] }}
+						{% endif %}
+					</td>
+				{% endfor %}
+				<td>
+					{% if name in positions[count] %}
+						{{ positions[count][name].values() | sum }}
+					{% endif %}
+				</td>
+				<td></td>
+			{% endfor %}
+		</tr>
+	{% endfor %}
 </table>
 
 <h1>Game statistics</h1>
-<table border="1">
+<table>
 	<tr>
 		<th>Name</th>
 		<th>Plays</th>
@@ -101,8 +131,30 @@ details on Glicko see
 	{% endfor %}
 </table>
 
+<h2>F1 scores</h2>
+<table>
+	<tr>
+		<td></td>
+		{% for i in range(NEW_F1 | length) %}
+			<th>{{ i + 1 }}</th>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td>New F1</td>
+		{% for score in NEW_F1 %}
+			<td>{{ score }}</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td>Old F1</td>
+		{% for score in OLD_F1 %}
+			<td>{{ score }}</td>
+		{% endfor %}
+	</tr>
+</table>
+
 <h1>Recorded games</h1>
-<table border="1">
+<table>
 	<tr>
 		<th>Date</th>
 		<th>Game</th>
