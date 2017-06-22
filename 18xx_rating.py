@@ -152,6 +152,14 @@ class Game:
     def __init__(self, name):
         self.name = name
         self.times_played = 0
+        self.player_counts = {}
+
+    def __lt__(self, other):
+        if isinstance(other, Game):
+            if self.times_played == other.times_played:
+                return self.name < other.name
+            return self.times_played < other.times_played
+        raise NotImplemented()
 
 
 class Play:
@@ -186,6 +194,10 @@ def main():
         if game['game'] not in games:
             games[game['game']] = Game(game['game'])
         games[game['game']].times_played += 1
+        player_count = len(game['players'])
+        if player_count not in games[game['game']].player_counts:
+            games[game['game']].player_counts[player_count] = 0
+        games[game['game']].player_counts[player_count] += 1
 
         # Record the information of the play
         play = Play(games[game['game']], game['date'], game['players'])
@@ -212,7 +224,6 @@ def main():
         players[play.ranking[0].name].wins += 1
 
         # Amounts of times finished in each game type
-        player_count = len(play.ranking)
         if player_count not in positions:
             positions[player_count] = {}
         for i in range(len(play.ranking)):

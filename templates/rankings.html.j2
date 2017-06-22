@@ -161,13 +161,22 @@ indicates how often that player has beaten the players in the columns.</p>
 <h1>Game statistics</h1>
 <table>
 	<tr>
-		<th>Name</th>
-		<th>Plays</th>
+		<th rowspan="2">Name</th>
+		<th colspan="{{ positions | length + 1}}">Times played</th>
 	</tr>
-	{% for name, game in games | dictsort %}
+	<tr>
+		<th>Total plays</th>
+		{% for count in positions.keys() %}
+			<th>{{ count }} players</th>
+		{% endfor %}
+	</tr>
+	{% for name, game in games | dictsort(by='value') | reverse %}
 		<tr>
 			<td>{{ game.name }}</td>
-			<td>{{ game.times_played }}</td>
+			<td class="right">{{ game.times_played }}</td>
+			{% for count in positions.keys() %}
+				<td class="right">{{ game.player_counts[count] }}</td>
+			{% endfor %}
 		</tr>
 	{% endfor %}
 </table>
