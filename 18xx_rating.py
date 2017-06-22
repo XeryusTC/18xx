@@ -21,6 +21,7 @@ GLICKO_PERIOD = date(2017, 5, 1) - date(2017, 4, 1)
 WIN  = 1
 DRAW = 0.5
 LOSS = 0
+DRAW_DELTA = 15
 
 PlayerScore = namedtuple('PlayerScore', ('name', 'score'))
 
@@ -329,10 +330,11 @@ def _periodic_glicko_update(players, player_scores, game_num):
               players[player].glicko_phi * GLICKO_FACTOR))
 
 def _determine_score(ranking, player, opponent):
-    if ranking[player].score > ranking[opponent].score:
-        return WIN
-    elif ranking[player].score < ranking[opponent].score:
+    diff = ranking[player].score - ranking[opponent].score
+    if diff < -DRAW_DELTA:
         return LOSS
+    elif diff > DRAW_DELTA:
+        return WIN
     return DRAW
 
 def plot_elo(players, begin_date, end_date):
