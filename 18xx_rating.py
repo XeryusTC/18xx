@@ -357,7 +357,7 @@ def plot_elo(players, begin_date, end_date):
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
     for player in players:
         elo = np.array(players[player].elo_history).T
-        line, = plt.plot(*elo, 'x-', label=player.title(),
+        line, = plt.plot(*elo, label=player.title(),
                          color=players[player].color)
         labels.append(line)
     ax.set_xlim(begin_date, end_date)
