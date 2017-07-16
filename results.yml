@@ -1,10 +1,31 @@
+- date: 2017-07-14
+  game: '1830'
+  players:
+      ot: 1640
+      mischa: 1394
+      xeryus: 1260
+      boris: 360
+- date: 2017-07-12
+  game: '1846: The Race for the Midwest'
+  players:
+      xeryus: 5631
+      mischa: 5269
+      ot: 5137
+      wouter: 4424
+      boris: 4006
+- date: 2017-07-01
+  game: '1856'
+  players:
+      xeryus: 9059
+      ot: 7685
+      boris: 7433
 - date: 2017-06-28
   game: '1846: The Race for the Midwest'
   players:
       ot: 9107
       boris: 8851
       xeryus: 5970
-- date: 2017-06-28
+- date: 2017-06-27
   game: '1846: The Race for the Midwest'
   players:
       boris: 6173
@@ -73,16 +94,165 @@
       boris: 11181
       ot: 8053
       xeryus: 8104
+- date: 2017-05-17
+  game: '1849'
+  players:
+      boris: 6255
+      ot: 7045
+      xeryus: 6337
+- date: 2017-05-17
+  game: '1846: The Race for the Midwest'
+  players:
+      boris: 6689
+      ot: 6027
+      xeryus: 6414
+- date: 2017-05-10
+  game: '1844'
+  players:
+      boris: 7499
+      ot: 7468
+      xeryus: 6538
+      wouter: 6557
 - date: 2017-05-10
   game: '1830'
   players:
       boris: 15309
       xeryus: 7904
+- date: 2017-05-03
+  game: '1846: The Race for the Midwest'
+  players:
+      boris: 11564
+      xeryus: 9506
+- date: 2017-05-03
+  game: '1829 Mainline'
+  players:
+      xeryus: 10110
+      boris: 11261
 - date: 2017-05-01
   game: '18Scan'
   players:
       boris: 5567
       xeryus: 6947
+- date: 2017-04-26
+  game: '1824'
+  players:
+      boris: 6548
+      ot: 7274
+      mischa: 7603
+      xeryus: 6622
+- date: 2017-04-19
+  game: '18EU'
+  players:
+      boris: 7324
+      ot: 7378
+      xeryus: 6458
+      wouter: 5931
+- date: 2017-04-12
+  game: '18EU'
+  players:
+      boris: 8220
+      ot: 6751
+      mischa: 7510
+      xeryus: 7969
+- date: 2017-04-05
+  game: '18EU'
+  players:
+      boris: 8881
+      ot: 8283
+      xeryus: 7240
+- date: 2017-03-29
+  game: '1861: The Railways of the Russian Empire'
+  players:
+      boris: 11086
+      ot: 13168
+      xeryus: 10999
+- date: 2017-03-22
+  game: '1849'
+  players:
+      boris: 4523
+      ot: 8928
+      xeryus: 6898
+- date: 2017-03-19
+  game: '1862EA'
+  players:
+      boris: 6602
+      ot: 8044
+      mischa: 10141
+      xeryus: 7275
+- date: 2017-03-18
+  game: '1822: The Railways of Great Britain'
+  players:
+      boris: 4465
+      ot: 6320
+      mischa: 9100
+      xeryus: 5597
+      wouter: 8006
+- date: 2017-03-18
+  game: '1817'
+  players:
+      boris: 4028
+      ot: 3347
+      mischa: 5683
+      xeryus: 2460
+      wouter: 6425
+- date: 2017-03-15
+  game: '18NEB'
+  players:
+      boris: 8504
+      ot: 10043
+- date: 2017-03-15
+  game: '1860'
+  players:
+      boris: 11988
+      ot: 13075
+- date: 2017-03-08
+  game: '18FL'
+  players:
+      boris: 7373
+      ot: 7236
+      xeryus: 8142
+      wouter: 6897
+- date: 2017-03-08
+  game: '18NEB'
+  players:
+      boris: 5480
+      ot: 4807
+      xeryus: 6136
+      wouter: 4604
+- date: 2017-03-01
+  game: '18Rhl: Rhineland'
+  players:
+      boris: 7073
+      ot: 7800
+      xeryus: 4611
+      wouter: 4512
+- date: 2017-02-23
+  game: 'Poseidon'
+  players:
+      boris: 5064
+      ot: 6213
+- date: 2017-02-22
+  game: '1822: The Railways of Great Britain'
+  players:
+      boris: 6412
+      ot: 10536
+      xeryus: 7537
+      wouter: 6301
+- date: 2017-02-15
+  game: '1848: Australia'
+  players:
+      boris: 1947
+      ot: 2269
+      mischa: 1585
+      xeryus: 1134
+      wouter: 2321
+- date: 2017-02-01
+  game: '18ww: The Railways of Great Britain'
+  players:
+      boris: 10908
+      ot: 10518
+      xeryus: 7586
+      wouter: 8401
 - date: 2017-01-25
   game: '1822: The Railways of Great Britain'
   players:
