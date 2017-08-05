@@ -203,6 +203,32 @@ indicates how often that player has beaten the players in the columns.</p>
 	</tr>
 </table>
 
+<h1>Glicko history</h1>
+<table>
+	<tr>
+		<th>Date</th>
+		{% for name, player in players | dictsort %}
+			{{ player_name(name, player.color, 'th') }}
+		{% endfor %}
+	</tr>
+	{% for i in range((players.values() | list)[0].glicko_mu_hist | length) %}
+		<tr>
+			{% for name, player in players | dictsort %}
+				{% if loop.first %}
+					<td>{{ player.glicko_mu_hist[i][0] }}</td>
+				{% endif %}
+				<td colspan="2">
+					{{ (player.glicko_mu_hist[i][1] * GLICKO_FACTOR + 1500)
+					   | round(2) }}
+					±
+					{{ (player.glicko_phi_hist[i][1] * GLICKO_FACTOR)
+					   | round(2) }}
+				</td>
+			{% endfor %}
+		</tr>
+	{% endfor %}
+</table>
+
 <h1>Recorded games</h1>
 <table>
 	<tr>
