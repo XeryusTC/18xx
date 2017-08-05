@@ -191,16 +191,17 @@ def main():
         print(f"Processing game from {game['date']}")
         dates.append(game['date'])
         # Register a play of this game
-        if game['game'] not in games:
-            games[game['game']] = Game(game['game'])
-        games[game['game']].times_played += 1
+        game_name = str(game['game'])
+        if game_name not in games:
+            games[game_name] = Game(game_name)
+        games[game_name].times_played += 1
         player_count = len(game['players'])
-        if player_count not in games[game['game']].player_counts:
-            games[game['game']].player_counts[player_count] = 0
-        games[game['game']].player_counts[player_count] += 1
+        if player_count not in games[game_name].player_counts:
+            games[game_name].player_counts[player_count] = 0
+        games[game_name].player_counts[player_count] += 1
 
         # Record the information of the play
-        play = Play(games[game['game']], game['date'], game['players'])
+        play = Play(games[game_name], game['date'], game['players'])
         plays.append(play)
         game_num = len(plays)
 
@@ -336,7 +337,7 @@ def _periodic_glicko_update(players, player_scores, game_num):
             print(f'    {player.title()} was inactive in period')
             players[player].calculate_glicko_inactive()
         players[player].update_glicko(game_num)
-        print("  {} new Glicko: {:.2f}+={:.2f}".format(player.title(),
+        print("  {} new Glicko: {:.2f}±{:.2f}".format(player.title(),
               players[player].glicko_mu * GLICKO_FACTOR + 1500,
               players[player].glicko_phi * GLICKO_FACTOR))
 
@@ -378,8 +379,6 @@ def plot_glicko(players, begin_date, end_date):
         # plot
         glicko_mu = np.array(players[player].glicko_mu_hist).T
         glicko_mu[1] = glicko_mu[1] * GLICKO_FACTOR + 1500
-        glicko_phi = np.array(players[player].glicko_phi_hist).T[1]
-        glicko_phi *= GLICKO_FACTOR * 2
         line, = plt.plot(*glicko_mu, label=player.title(),
                          color=players[player].color)
         labels.append(line)
