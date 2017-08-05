@@ -1,3 +1,26 @@
+- date: 2017-08-02
+  game: 1868
+  players:
+      boris: 7113
+      xeryus: 6628
+      rené-m: 6385
+- date: 2017-08-02
+  game: 1868
+  players:
+      boris: 4342
+      rené-m: 4341
+      ot: 3643
+      xeryus: 3258
+- date: 2017-07-21
+  game: '1825: Everything'
+  players:
+      boris: 17041
+      xeryus: 16255
+- date: 2017-07-19
+  game: '1825: Unit 3'
+  players:
+      xeryus: 7677
+      boris: 4992
 - date: 2017-07-14
   game: '1830'
   players:
