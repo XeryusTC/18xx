@@ -13,6 +13,7 @@ from collections import namedtuple
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import calendar
 import sys
+from unipath import Path
 
 ELO_K = 32
 OLD_F1 = [10, 8, 6, 5, 4, 3, 2, 1]
@@ -23,6 +24,7 @@ WIN  = 1
 DRAW = 0.5
 LOSS = 0
 DRAW_DELTA = 15
+OUTDIR = Path('output')
 
 PlayerScore = namedtuple('PlayerScore', ('name', 'score'))
 
@@ -286,9 +288,11 @@ def main():
     # Determine begin and end dates for display
     plays.sort(key=lambda p: p.date)
     begin_date = date(plays[0].date.year, plays[0].date.month, 1)
+
     # Export results
-    html_results('rankings.html', players, games, total_games, dates, plays,
-        positions, head2head)
+    OUTDIR.mkdir()
+    html_results(OUTDIR.child('index.html'), players, games, total_games,
+                 dates, plays, positions, head2head)
     plot_elo(players, begin_date, end_date)
     plot_glicko(players, begin_date, end_date)
     plot_glicko_gaussians(players)
@@ -375,7 +379,7 @@ def plot_elo(players, begin_date, end_date):
     plt.xlabel('Games played')
     plt.ylabel('ELO rating')
     plt.legend(handles=labels, loc=2)
-    plt.savefig('rankings_elo.png')
+    plt.savefig(OUTDIR.child('rankings_elo.png'))
 
 def plot_glicko(players, begin_date, end_date):
     print('Plotting Glicko history')
@@ -399,7 +403,7 @@ def plot_glicko(players, begin_date, end_date):
     plt.xlabel('Games played')
     plt.ylabel('Glicko rating')
     plt.legend(handles=labels, loc=2)
-    plt.savefig('rankings_glicko.png')
+    plt.savefig(OUTDIR.child('rankings_glicko.png'))
 
 def plot_glicko_gaussians(players):
     print('Plotting current Glicko scores')
@@ -418,7 +422,7 @@ def plot_glicko_gaussians(players):
     plt.title('Current Glicko ratings')
     plt.xlabel('Rating')
     plt.legend(handles=labels, loc=2)
-    plt.savefig('rankings_glicko_gaussians.png')
+    plt.savefig(OUTDIR.child('rankings_glicko_gaussians.png'))
 
 def html_results(filename, players, games, total_games, dates, plays,
                  positions, head2head):

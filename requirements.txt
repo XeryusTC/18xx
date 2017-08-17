@@ -10,3 +10,4 @@ pytz==2017.2
 PyYAML==3.12
 sip==4.19.2
 six==1.10.0
+Unipath==1.1
