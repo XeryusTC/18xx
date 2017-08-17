@@ -6,6 +6,7 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 import matplotlib.dates as mdates
+import matplotlib.colors as mcolors
 import numpy as np
 from datetime import date, timedelta
 from collections import namedtuple
@@ -44,14 +45,7 @@ class Player:
         self.glicko_phi = 350/GLICKO_FACTOR
         self.glicko_phi_hist = [(start_date, self.glicko_phi)]
         self.glicko_sigma = 0.08
-        self._calculate_color()
-
-    def _calculate_color(self):
-        color = [ord(c) for c in self.name]
-        r = (sum(color[0::3]) % 16) * 17
-        g = (sum(color[1::3]) % 16) * 17
-        b = (sum(color[2::3]) % 16) * 17
-        self.color = f'#{r:0>2x}{g:0>2x}{b:0>2x}'
+        self.glicko_inactive = True
 
     def calculate_new_elo(self, other_elo, scores):
         expected = 0
@@ -66,6 +60,7 @@ class Player:
         self.elo_history.append((game_num, self.elo))
 
     def calculate_new_glicko(self, other_mu, other_phi, scores):
+        self.glicko_inactive = False
         mu_prime = 0
         phi_prime = 0
         sigma_prime = 0
@@ -91,8 +86,11 @@ class Player:
         self._new_glicko_sigma = sigma_prime
 
     def calculate_glicko_inactive(self):
-        phi_prime = np.sqrt(np.power(self.glicko_phi, 2) +
-                            np.power(self.glicko_sigma, 2))
+        if self.glicko_inactive: # Don't increase glicko if no games
+            phi_prime = self.glicko_phi
+        else:
+            phi_prime = np.sqrt(np.power(self.glicko_phi, 2) +
+                                np.power(self.glicko_sigma, 2))
         self._new_glicko_mu = self.glicko_mu
         self._new_glicko_phi = phi_prime
         self._new_glicko_sigma = self.glicko_sigma
@@ -273,6 +271,17 @@ def main():
 
     # Update glicko
     end_date = periodic_glicko(plays, players)
+
+    # Give each player a unique color
+    delta = 1.0 / len(players)
+    i = 0
+    for name, player in players.items():
+        r, g, b = mcolors.hsv_to_rgb([i * delta, .75, .75])
+        r = int(r*256)
+        g = int(g*256)
+        b = int(b*256)
+        player.color = f'#{r:0>2x}{g:0>2x}{b:0>2x}'
+        i += 1
 
     # Determine begin and end dates for display
     plays.sort(key=lambda p: p.date)
