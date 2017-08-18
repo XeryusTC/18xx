@@ -23,7 +23,7 @@ GLICKO_PERIOD = date(2017, 5, 1) - date(2017, 4, 1)
 WIN  = 1
 DRAW = 0.5
 LOSS = 0
-DRAW_DELTA = 15
+DRAW_DELTA = 0
 OUTDIR = Path('output')
 
 PlayerScore = namedtuple('PlayerScore', ('name', 'score'))
@@ -277,7 +277,7 @@ def main():
     # Give each player a unique color
     delta = 1.0 / len(players)
     i = 0
-    for name, player in players.items():
+    for name, player in sorted(players.items()):
         r, g, b = mcolors.hsv_to_rgb([i * delta, .75, .75])
         r = int(r*256)
         g = int(g*256)
