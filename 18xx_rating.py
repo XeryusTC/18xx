@@ -189,6 +189,9 @@ def main():
 
     for game in reversed(data):
         print(f"Processing game from {game['date']}")
+        if 'disable' in game.keys() and game['disable']:
+            print("Game is disabled")
+            continue
         dates.append(game['date'])
         # Register a play of this game
         game_name = str(game['game'])

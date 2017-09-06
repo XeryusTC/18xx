@@ -1,3 +1,52 @@
+- date: 2017-09-05
+  game: '1846: The Race for the Midwest'
+  players:
+      xeryus: 6921
+      ot: 7647
+      boris: 8443
+- date: 2017-09-05
+  game: '1846: The Race for the Midwest'
+  players:
+      xeryus: 7876
+      ot: 6756
+      boris: 4356
+- date: 2017-09-05
+  disable: true
+  game: '1846: The Race for the Midwest'
+  players:
+      ot: 1054
+      boris: 847
+      xeryus: 742
+- date: 2017-08-29
+  game: '1822: The Railways of Great Britain'
+  players:
+      boris: 11833
+      ot: 10184
+      xeryus: 9089
+- date: 2017-08-26
+  game: '1846: The Race for the Midwest'
+  players:
+      boris: 5067
+      ot: 5227
+      mischa: 4505
+- date: 2017-08-26
+  game: '1822: The Railways of Great Britain'
+  players:
+      boris: 11231
+      ot: 11663
+      mischa: 11619
+- date: 2017-08-26
+  game: 1837
+  players:
+      boris: 12420
+      ot: 9312
+      mischa: 10941
+- date: 2017-08-23
+  game: 18EU
+  players:
+      ot: 8074
+      xeryus: 8068
+      boris: 7865
 - date: 2017-08-15
   game: 18NEB
   players:
@@ -13,12 +62,12 @@
   players:
       boris: 7113
       xeryus: 6628
-      rené-m: 6385
+      rené m: 6385
 - date: 2017-08-02
   game: 1868
   players:
       boris: 4342
-      rené-m: 4341
+      rené m: 4341
       ot: 3643
       xeryus: 3258
 - date: 2017-07-21
