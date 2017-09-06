@@ -397,7 +397,7 @@ def plot_glicko(players, begin_date, end_date):
         labels.append(line)
 
     ax.set_xlim(begin_date, end_date)
-    ax.set_ylim(1000, 2000)
+    ax.set_ylim(1300, 1900)
     fig.autofmt_xdate()
     plt.title('History of Glicko ratings')
     plt.xlabel('Games played')
