@@ -1,3 +1,22 @@
+- date: 2017-09-20
+  game: '18Rhl: Rhineland'
+  players:
+      boris: 7932
+      xeryus: 6633
+      ot: 6037
+- date: 2017-09-13
+  game: 18EU
+  players:
+      ot: 8517
+      boris: 8601
+      xeryus: 8116
+- date: 2017-09-10
+  game: '1846: The Race for the Midwest'
+  players:
+      xeryus: 7675
+      ot: 7428
+      boris: 4965
+      mischa: 6638
 - date: 2017-09-05
   game: '1846: The Race for the Midwest'
   players:
