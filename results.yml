@@ -1,3 +1,21 @@
+- date: 2017-10-18
+  game: '1835'
+  players:
+      ot: 11267
+      xeryus: 9381
+      boris: 9263
+- date: 2017-10-11
+  game: '1849'
+  players:
+      ot: 8574
+      boris: 5671
+      xeryus: 3408
+- date: 2017-10-04
+  game: '1861: The Railways of the Russian Empire'
+  players:
+      ot: 9833
+      xeryus: 9418
+      boris: 8856
 - date: 2017-09-20
   game: '18Rhl: Rhineland'
   players:
