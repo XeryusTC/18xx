@@ -1,3 +1,31 @@
+- date: 2018-01-16
+  game: '1822: The Railways of Great Britain'
+  players:
+      boris: 14730
+      xeryus: 12316
+      rené: 11820
+      ot: 9885
+- date: 2018-01-10
+  game: '1822: The Railways of Great Britain'
+  players:
+      ot: 16264
+      boris: 15758
+      xeryus: 13274
+- date: 2018-01-09
+  game: 18CZ
+  disable: true
+  players:
+      boris: 1687
+      gilles: 1668
+      ot: 1656
+      mischa: 1640
+      xeryus: 1638
+- date: 2018-01-02
+  game: '1862EA'
+  players:
+      ot: 20092
+      mischa: 16480
+      boris: 11322
 - date: 2017-12-19
   game: 1830
   players:
@@ -6,7 +34,7 @@
       boris: 6172
       rené: 5538
       xeryus: 5154
-- date: 2017-12-12
+- date: 2017-12-14
   game: '1846: The Race for the Midwest'
   players:
       ot: 8029
