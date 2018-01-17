@@ -1,10 +1,32 @@
+- date: 2017-12-19
+  game: 1830
+  players:
+      mischa: 6896
+      ot: 6720
+      boris: 6172
+      rené: 5538
+      xeryus: 5154
+- date: 2017-12-12
+  game: '1846: The Race for the Midwest'
+  players:
+      ot: 8029
+      xeryus: 8009
+      mischa: 7749
+      rené: 7062
+      boris: 6765
+- date: 2017-12-06
+  game: 1839 The Netherlands
+  players:
+      boris: 8243
+      gilles: 8889
+      xeryus: 7238
 - date: 2017-11-29
   game: '1825: Everything'
   players:
       xeryus: 16766
       ot: 16024
       boris: 12519
-      rené m: 12307
+      rené: 12307
 - date: 2017-11-22
   game: '1822: The Railways of Great Britain'
   players:
@@ -137,12 +159,12 @@
   players:
       boris: 7113
       xeryus: 6628
-      rené m: 6385
+      rené: 6385
 - date: 2017-08-02
   game: 1868
   players:
       boris: 4342
-      rené m: 4341
+      rené: 4341
       ot: 3643
       xeryus: 3258
 - date: 2017-07-21
