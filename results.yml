@@ -1,3 +1,110 @@
+- date: 2018-04-25
+  game: 1889
+  players:
+      boris: 4537
+      xeryus: 4309
+      gilles: 4001
+      ewoud: 2440
+- date: 2018-04-18
+  game: 18Scan
+  players:
+      ot: 5880
+      boris: 4997
+      xeryus: 4725
+      ewoud: 3757
+- date: 2018-04-11
+  game: '1862EA'
+  players:
+      ewoud: 9432
+      boris: 9259
+      ot: 8937
+      tom: 8071
+- date: 2018-04-04
+  game: 18MEX
+  players:
+      boris: 5164
+      rené: 4864
+      ot: 4280
+      xeryus: 3372
+- date: 2018-03-29
+  game: 1860
+  players:
+      boris: 13023
+      ot: 11222
+- date: 2018-03-28
+  game: 18CZ
+  players:
+      boris: 7316
+      ot: 7044
+      rené: 6801
+- date: 2018-03-21
+  game: 18CLE
+  players:
+      ot: 7101
+      wouter: 6386
+      xeryus: 5957
+      boris: 5060
+- date: 2018-03-14
+  game: 18EU
+  players:
+      ot: 6871
+      boris: 6596
+      xeryus: 6445
+      rené: 6240
+- date: 2018-03-07
+  game: 1812
+  players:
+      ot: 4420
+      boris: 4390
+      rené: 4386
+      xeryus: 4278
+- date: 2018-03-05
+  game: '1812'
+  players:
+      boris: 5085
+      xeryus: 4980
+- date: 2018-02-28
+  game: 18NW
+  players:
+      ot: 3702
+      xeryus: 2999
+      boris: 2772
+      mischa: 2476
+      gilles: 923
+- date: 2018-02-21
+  game: '1822: The Railways of Great Britain'
+  players:
+      ot: 9974
+      boris: 8985
+      xeryus: 8024
+      gilles: 7950
+      rené: 1721
+- date: 2018-02-14
+  game: 18EU
+  players:
+      ot: 8331
+      boris: 7624
+      xeryus: 7230
+      mischa: 5573
+- date: 2018-02-07
+  game: '1822: The Railways of Great Britain'
+  players:
+      xeryus: 10664
+      boris: 9716
+      ot: 9391
+- date: 2018-01-31
+  disable: true
+  game: 1817
+  players:
+      xeryus: 948
+      boris: 811
+      ot: 0
+- date: 2018-01-24
+  game: 18FL
+  players:
+      boris: 9942
+      xeryus: 9196
+      mischa: 9106
 - date: 2018-01-16
   game: '1822: The Railways of Great Britain'
   players:
