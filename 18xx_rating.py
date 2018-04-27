@@ -14,6 +14,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 import calendar
 import sys
 from unipath import Path
+import math
 
 ELO_K = 32
 GLICKO_FACTOR = 173.7178
@@ -269,15 +270,18 @@ def main():
     end_date = periodic_glicko(plays, players)
 
     # Give each player a unique color
-    delta = 1.0 / len(players)
-    i = 0
-    for name, player in sorted(players.items()):
-        r, g, b = mcolors.hsv_to_rgb([i * delta, .75, .75])
-        r = int(r*256)
-        g = int(g*256)
-        b = int(b*256)
+    subdivs = math.ceil(math.pow(len(players), 1/3))
+    subcubes = int(math.pow(subdivs, 3))
+    cube_stride = subdivs - 1
+    assert math.gcd(cube_stride, subcubes) == 1, \
+           "stride is not coprime with number of color cubes"
+    color_stride = math.floor(255 / (subdivs - 1))
+    for i, (name, player) in enumerate(players.items()):
+        cube = (i * cube_stride) % subcubes
+        r = (cube % subdivs) * color_stride
+        g = math.floor((cube / subdivs) % subdivs) * color_stride
+        b = math.floor((cube / subdivs / subdivs) % subdivs) * color_stride
         player.color = f'#{r:0>2x}{g:0>2x}{b:0>2x}'
-        i += 1
 
     # Determine begin and end dates for display
     plays.sort(key=lambda p: p.date)
