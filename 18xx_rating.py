@@ -16,8 +16,6 @@ import sys
 from unipath import Path
 
 ELO_K = 32
-OLD_F1 = [10, 8, 6, 5, 4, 3, 2, 1]
-NEW_F1 = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1]
 GLICKO_FACTOR = 173.7178
 GLICKO_PERIOD = date(2017, 5, 1) - date(2017, 4, 1)
 WIN  = 1
@@ -40,8 +38,6 @@ class Player:
         self.wins = 0
         self.elo = 1000
         self.elo_history = []
-        self.old_F1_points = 0
-        self.new_F1_points = 0
         self.glicko_mu = 0
         self.glicko_mu_hist = [(start_date, self.glicko_mu)]
         self.glicko_phi = 350/GLICKO_FACTOR
@@ -218,11 +214,6 @@ def main():
 
         print('  Rank of players:', ', '.join((p.name.title()
                                                for p in play.ranking)))
-
-        # Distribute F1 points
-        for i in range(len(play.ranking)):
-            players[play.ranking[i].name].old_F1_points += OLD_F1[i]
-            players[play.ranking[i].name].new_F1_points += NEW_F1[i]
 
         # Increase number of wins for the winning player
         players[play.ranking[0].name].wins += 1
@@ -438,8 +429,8 @@ def html_results(filename, players, games, total_games, dates, plays,
     with open(filename, 'w') as f:
         f.write(template.render(players=players, games=games,
                                 dates=dates, plays=plays,
-                                GLICKO_FACTOR=GLICKO_FACTOR, NEW_F1=NEW_F1,
-                                OLD_F1=OLD_F1, positions=positions,
+                                GLICKO_FACTOR=GLICKO_FACTOR,
+                                positions=positions,
                                 head2head=head2head))
         return
 

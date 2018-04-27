@@ -38,8 +38,6 @@ Last recorded game: {{ dates[-1] }}<br />
 		<th>Glicko rating</th>
 		<th>Glicko RD</th>
 		<th>Glicko 95% CI</th>
-		<th>Old F1 points</th>
-		<th>New F1 points</th>
 		<th>Total score</th>
 		<th>Mean score</th>
 	</tr>
@@ -57,8 +55,6 @@ Last recorded game: {{ dates[-1] }}<br />
 				* GLICKO_FACTOR + 1500) | round(2)}}-{{ ((player.glicko_mu
 				+ 2* player.glicko_phi) * GLICKO_FACTOR + 1500) | round(2) }}
 			</td>
-			<td>{{ player.old_F1_points }}</td>
-			<td>{{ player.new_F1_points }}</td>
 			<td>{{ player.scores | sum }}</td>
 			<td>
 				{{ ((player.scores|sum) / (player.scores|length)) | round(2) }}
@@ -179,28 +175,6 @@ indicates how often that player has beaten the players in the columns.</p>
 			{% endfor %}
 		</tr>
 	{% endfor %}
-</table>
-
-<h2>F1 scores</h2>
-<table>
-	<tr>
-		<td></td>
-		{% for i in range(NEW_F1 | length) %}
-			<th>{{ i + 1 }}</th>
-		{% endfor %}
-	</tr>
-	<tr>
-		<td>New F1</td>
-		{% for score in NEW_F1 %}
-			<td>{{ score }}</td>
-		{% endfor %}
-	</tr>
-	<tr>
-		<td>Old F1</td>
-		{% for score in OLD_F1 %}
-			<td>{{ score }}</td>
-		{% endfor %}
-	</tr>
 </table>
 
 <h1>Glicko history</h1>
