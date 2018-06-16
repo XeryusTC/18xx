@@ -1,3 +1,62 @@
+- date: 2018-06-13
+  game: 1949
+  players:
+      ot: 6646
+      xeryus: 5191
+      boris: 4752
+      mischa: 3573
+      ewoud: 0
+- date: 2018-06-06
+  game: 1867
+  players:
+      tom: 10202
+      xeryus: 7382
+      rené: 5618
+- date: 2018-05-30
+  game: 18MEX
+  players:
+      tom: 5896
+      boris: 5877
+      xeryus: 5813
+- date: 2018-05-24
+  game: 18NW
+  players:
+      boris: 8507
+      xeryus: 7838
+      ewoud: 7413
+- date: 2018-05-23
+  game: 1846
+  players:
+      xeryus: 6094
+      ewoud: 6019
+      boris: 5922
+      mischa: 5141
+- date: 2018-05-16
+  game: 1862EA
+  disable: true
+  players:
+      ot: 2477
+      xeryus: 2319
+      ewoud: 2283
+      mischa: 2205
+      boris: 2113
+      rené: 1821
+- date: 2018-05-09
+  game: 1867
+  players:
+      boris: 5195
+      ot: 4425
+      xeryus: 4218
+      mischa: 3718
+      ewoud: 2726
+- date: 2018-05-02
+  game: 1867
+  players:
+      ot: 4767
+      xeryus: 4275
+      rené: 4023
+      ewoud: 3681
+      boris: 3245
 - date: 2018-04-25
   game: 1889
   players:
@@ -760,5 +819,5 @@
 - date: 2016-09-03
   game: '1893: Cologne'
   players:
-      boris: 9659
       xeryus: 8885
+      boris: 9659
