@@ -1,11 +1,99 @@
+- date: 2018-10-17
+  game: 1853V1.5
+  players:
+      tom: 7970
+      xeryus: 7815
+      ewoud: 7640
+      boris: 7560
+- date: 2018-10-04
+  game: 18CZ
+  players:
+      xeryus: 3886
+      ot: 3771
+      ewoud: 3715
+      boris: 3627
+      rené: 2815
+- date: 2018-09-12
+  game: 1867
+  players:
+      ot: 9346
+      mischa: 9116
+      boris: 6371
+- date: 2018-08-22
+  game: '1822: The Railways of Great Britain'
+  players:
+      rené: 14150
+      boris: 13823
+      xeryus: 9194
+      ot: 9983
+      xeryus: 5727
+- date: 2018-08-15
+  game: 1834
+  players:
+      tom: 2468
+      mischa: 2301
+      xeryus: 2188
+      boris: 1095
+- date: 2018-08-01
+  game: 1867
+  players:
+      boris: 7664
+      ewoud: 7397
+      xeryus: 7226
+      mischa: 6837
+- date: 2018-07-25
+  game: 1867
+  players:
+      gilles: 8260
+      rené: 7818
+      ewoud: 7405
+      xeryus: 6997
+      boris: 5849
+- date: 2018-07-18
+  game: 1867?
+  players:
+      mischa: 6186
+      ewoud: 6089
+      xeryus: 6008
+      boris: 4969
+      gilles: 4837
+- date: 2018-06-27
+  game: 1834
+  players:
+      boris: 3970
+      xeryus: 3060
+      mischa: 3008
+      ot: 2598
+      ewoud: 2235
+- date: 2018-06-16
+  game: 18USA
+  players:
+      ot: 9194
+      boris: 6886
+      mischa: 5938
+      rené: 5374
+- date: 2018-06-16
+  game: 1817
+  players:
+      tom: 110907
+      ewoud: 10990
+      gilles: 8374
+      xeryus: 7675
 - date: 2018-06-13
-  game: 1949
+  game: 1849
   players:
       ot: 6646
       xeryus: 5191
       boris: 4752
       mischa: 3573
       ewoud: 0
+- date: 2018-06-11
+  game: 1834
+  players:
+      xeryus: 3614
+      boris: 5161
+      mischa: 5809
+      ewoud: 3744
 - date: 2018-06-06
   game: 1867
   players:
