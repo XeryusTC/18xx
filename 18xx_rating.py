@@ -15,6 +15,7 @@ import calendar
 import sys
 from unipath import Path
 import math
+from shutil import copyfile
 
 ELO_K = 32
 GLICKO_FACTOR = 173.7178
@@ -436,7 +437,8 @@ def html_results(filename, players, games, total_games, dates, plays,
                                 GLICKO_FACTOR=GLICKO_FACTOR,
                                 positions=positions,
                                 head2head=head2head))
-        return
+
+    copyfile('templates/style.css', 'output/style.css')
 
 if __name__ == '__main__':
     main()
