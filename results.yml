@@ -1,3 +1,32 @@
+- date: 2018-11-07
+  game: '1822: The Railways of Great Britain'
+  players:
+      boris: 18451
+      xeryus: 16476
+      tom: 15091
+- date: 2018-11-04
+  game: '1822: The Railways of Great Britain'
+  players:
+      tom: 9258
+      ot: 7299
+      xeryus: 7023
+      boris: 5706
+      ewoud: 5417
+- date: 2018-10-29
+  game: 1853
+  players:
+      boris: 3603
+      mischa: 3458
+      xeryus: 3198
+      ot: 2487
+      ewoud: 2367
+- date: 2018-10-24
+  game: '1822: The Railways of Great Britain'
+  players:
+      ot: 10756
+      boris: 11470
+      tom: 8337
+      ewoud: 5950
 - date: 2018-10-17
   game: 1853V1.5
   players:
@@ -5,7 +34,16 @@
       xeryus: 7815
       ewoud: 7640
       boris: 7560
-- date: 2018-10-04
+- date: 2018-10-10
+  game: '1822: The Railways of Great Britain'
+  players:
+      boris: 5790
+      tom: 5518
+      rené: 5426
+      ewoud: 4946
+      ot: 4372
+      xeryus: 5321
+- date: 2018-10-03
   game: 18CZ
   players:
       xeryus: 3886
@@ -13,6 +51,11 @@
       ewoud: 3715
       boris: 3627
       rené: 2815
+- date: 2018-09-19
+  game: 1862EA
+  players:
+      boris: 20309
+      ewoud: 13084
 - date: 2018-09-12
   game: 1867
   players:
@@ -57,6 +100,13 @@
       xeryus: 6008
       boris: 4969
       gilles: 4837
+- date: 2018-07-11
+  game: 1834
+  players:
+      xeryus: 3614
+      boris: 5161
+      mischa: 5809
+      ewoud: 3744
 - date: 2018-06-27
   game: 1834
   players:
@@ -65,6 +115,13 @@
       mischa: 3008
       ot: 2598
       ewoud: 2235
+- date: 2018-06-20
+  game: '1846: The Race for the Midwest'
+  players:
+      ot: 4908
+      ewoud: 4899
+      tom: 4494
+      boris: 4094
 - date: 2018-06-16
   game: 18USA
   players:
@@ -113,7 +170,7 @@
       xeryus: 7838
       ewoud: 7413
 - date: 2018-05-23
-  game: 1846
+  game: '1846: The Race for the Midwest'
   players:
       xeryus: 6094
       ewoud: 6019
