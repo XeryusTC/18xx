@@ -30,7 +30,7 @@ PlayerScore = namedtuple('PlayerScore', ('name', 'score'))
 
 
 class Player:
-    glicko_tau = 0.5
+    glicko_tau = 0.43
     glicko_epsilon = 0.00001
 
     def __init__(self, name, start_date):
