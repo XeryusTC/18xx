@@ -19,7 +19,7 @@ from shutil import copyfile
 
 ELO_K = 32
 GLICKO_FACTOR = 173.7178
-GLICKO_PERIOD = date(2017, 5, 1) - date(2017, 4, 1)
+GLICKO_PERIOD = 28 # days
 WIN  = 1
 DRAW = 0.5
 LOSS = 0
@@ -297,7 +297,7 @@ def main():
     plot_glicko_gaussians(players)
 
 def periodic_glicko(plays, players):
-    period = timedelta(days=28)
+    period = timedelta(days=GLICKO_PERIOD)
     plays.sort(key=lambda p: p.date)
     period_start = plays[0].date
     period_players = {}
